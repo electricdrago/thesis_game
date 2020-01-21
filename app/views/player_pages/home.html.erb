@@ -1,0 +1,44 @@
+<h1>PlayerPages#home</h1>
+<p>Find me in app/views/player_pages/home.html.erb</p>
+
+<input type="text" id="name">
+<input type="text" id="password">
+<button onclick= "signin()">sign in </button>
+
+
+<script>
+function signin(){
+  console.log($("#name")[0].value, $("#password")[0].value)
+
+  $.ajax({
+    url: "/sign_in",
+    data: {"name": Rails.$("#name")[0].value, "password": Rails.$("#password")[0].value, "authenticity_token": window._token},
+    type: "POST",
+    success: function(data){
+      console.log(data.message, data)
+    },
+    error: function (jqXHR, exception) {
+        var msg = '';
+        if (jqXHR.status === 0) {
+            msg = 'Not connect.\n Verify Network.';
+        } else if (jqXHR.status == 404) {
+            msg = 'Requested page not found. [404]';
+        } else if (jqXHR.status == 500) {
+            msg = 'Internal Server Error [500].';
+        } else if (exception === 'parsererror') {
+            msg = 'Requested JSON parse failed.';
+        } else if (exception === 'timeout') {
+            msg = 'Time out error.';
+        } else if (exception === 'abort') {
+            msg = 'Ajax request aborted.';
+        } else {
+            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+        }
+        $('#post').html(msg);
+        console.log(msg)
+    }
+  })
+
+}
+
+</script>
