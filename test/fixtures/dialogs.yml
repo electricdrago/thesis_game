@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  storyId: 1
+  order: 1
+  dialog: MyString
+  character: MyString
+  side: MyString
+
+two:
+  storyId: 1
+  order: 1
+  dialog: MyString
+  character: MyString
+  side: MyString

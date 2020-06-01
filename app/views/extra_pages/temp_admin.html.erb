@@ -1,0 +1,62 @@
+<h1>Admin</h1>
+
+<button onclick= "upload_JSSP()">upload_JSSP </button>
+
+
+<script>
+
+var success = function(response){
+  console.log(response)
+}
+var error = function(jqXHR, exception){
+  msg = getErrorMsg(jqXHR, exception)
+  var response = {message: msg}
+  console.log(response)
+}
+function upload_JSSP(){
+  var JSSP = [[[22,0],[15,1],[30,2]],
+                  [[5,0],[30,1],[10,2]],
+                  [[35,0],[12,2]]]
+  //JSSP = [[[22,0],[15,1]],[[30,3]]]
+  var url = "/upload_JSSP"
+  //JSSP = [[[time_cost, machine_type]=>activity(in order)]=>job]
+  var data = {"number_machines": 3, "time_limit": 100, "machines":"012","JSSP": JSSP}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+}
+
+
+
+function getErrorMsg(jqXHR, exception) {
+    var msg = '';
+    if (jqXHR.status === 0) {
+        msg = 'Not connect.\n Verify Network.';
+    } else if (jqXHR.status == 404) {
+        msg = 'Requested page not found. [404]';
+    } else if (jqXHR.status == 500) {
+        msg = 'Internal Server Error [500].';
+    } else if (exception === 'parsererror') {
+        msg = 'Requested JSON parse failed.';
+    } else if (exception === 'timeout') {
+        msg = 'Time out error.';
+    } else if (exception === 'abort') {
+        msg = 'Ajax request aborted.';
+    } else {
+        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+    }
+    return msg
+  }
+
+function ajax_upload(url, data, success, error){
+  data.authenticity_token= window._token
+  console.log(data)
+
+  $.ajax({
+    url: url,
+    data: data,
+    type: "POST",
+    success: success,
+    error: error
+  })
+}
+</script>

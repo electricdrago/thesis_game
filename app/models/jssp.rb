@@ -1,0 +1,2 @@
+class Jssp < ApplicationRecord
+end

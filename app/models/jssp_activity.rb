@@ -1,0 +1,2 @@
+class JsspActivity < ApplicationRecord
+end

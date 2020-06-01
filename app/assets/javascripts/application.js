@@ -15,3 +15,6 @@
 //= require turbolinks
 //= require_tree .
 //= require jquery
+
+//= require rangeslider.js
+//= require rangeslider.min.js

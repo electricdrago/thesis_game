@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number_job: 1
+  idJSSP: 1
+  order: 1
+  time_cost: 1
+
+two:
+  number_job: 1
+  idJSSP: 1
+  order: 1
+  time_cost: 1

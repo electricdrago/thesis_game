@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  storyId: 1
+  background: MyString
+  frame: 1
+
+two:
+  storyId: 1
+  background: MyString
+  frame: 1

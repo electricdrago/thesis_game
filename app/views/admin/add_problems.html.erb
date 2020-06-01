@@ -1,0 +1,282 @@
+<h1>Admin</h1>
+
+<%if @msg%>
+<p><%=@msg%></p>
+<%end%>>
+
+<button onclick= "upload_JSSP()">upload_JSSP </button>
+
+<h2> Add JSS problem</h2>
+<div id= "jobs">
+  <div id = "job1">
+    <div class = "1">
+      [
+      <p>time: </p><input type="number">
+      <p>machine type: </p><input type="number">
+      ]
+    </div>
+    <div id="activities1"></div>
+    <button type = "button" onclick="addActivity(1)">add activity</button>
+    <br>
+  </div>
+  <div id= "jobA"></div>
+  <button type = "button" onclick="addJob()">add job</button>
+
+</div>
+<p>Number of machines:</p> <input type = "number" id = "number_machines">
+<br>
+<p>Machine types: (write a string with a number of each machine type in order ej: "123")</p>
+<input type = "text" id = "machines">
+<br>
+<p>time limit:</p> <input type = "number" id = "time_limit">
+<br>
+<p>level:</p> <input type = "text" id = "level">
+<br>
+<button type = "button" onclick="post_JSSP()">upload JSSP</button>
+<h2> Add Story</h2>
+
+<div id ="dialogs">
+  <div class = "1">
+    <p>dialog: </p> <input type = "text" id = "text1">
+    <p>character image: </p> <input type = "text" id = "char1">
+    <p>left or right: </p> <input type = "text" id = "pos1" value = "left">
+  </div>
+  <div id = "nd"></div>
+  <button type = "button" onclick="addDialog()">add dialog</button>
+</div>
+<div id = "scenes">
+  <div class = "1">
+    <p>picture: </p> <input type = "string" id = "back1">
+    <p>frame</p> <input type = "number" id = "frame1" value=0>
+  </div>
+  <div id = "ns"></div>
+  <button type = "button" onclick="addScene()">add scenes</button>
+</div>
+<div id = "unlock">
+  <p>Strength</p> <input type = "range" id = "Strength" min = "0" max = "100">
+  <p>Intelligence</p> <input type = "range" id = "Intelligence" min = "0" max = "100">
+</div>
+<button type = "button" onclick="post_story()">upload Story</button>
+<script>
+jobs = 1
+activities = []
+activities[1] = 1
+dialogs = 1
+scenes = 1
+function addDialog(){
+  dialogs +=1
+  dia = document.createElement("div")
+  dia.setAttribute("class", String(dialogs))
+  dia.innerHTML = '<p>dialog: </p> <input type = "text" id = "text'+String(dialogs)+'">'+
+  '<p>character image: </p> <input type = "text" id = "char'+String(dialogs)+'">'+
+  '<p>left or right: </p> <input type = "text" id = "pos'+String(dialogs)+'" value = "left">'
+  d = document.getElementById("dialogs")
+  d.insertBefore(dia, document.getElementById("nd"))
+}
+function addScene(){
+  scenes +=1
+  dia = document.createElement("div")
+  dia.setAttribute("class", String(scenes))
+  dia.innerHTML = '<p>picture: </p> <input type = "string" id = "back'+String(scenes)+'">'+
+  '<p>frame</p> <input type = "number" id = "frame'+String(scenes)+'" value=0>'
+  d = document.getElementById("scenes")
+  d.insertBefore(dia, document.getElementById("ns"))
+}
+function addJob(){
+  jobs+=1
+  activities[jobs] = 1
+  var activity = document.createElement("div")
+  activity.setAttribute("id", "job"+String(jobs))
+  activity.innerHTML = '<div class ="1">[<p>time</p><input type="number">'+
+  '<p>machine type</p><input type="number">]</div>'+
+  '<div id="activities'+String(jobs)+'"><div>'+
+  '<button type = "button" onclick="addActivity('+String(jobs)+')">add activity</button> <br>'
+  j = document.getElementById("jobs")
+  j.insertBefore(activity, document.getElementById("jobA"))
+
+}
+function addActivity(job){
+  activities[job]+=1
+  activity = document.createElement("div")
+  activity.setAttribute("class", String(activities[job]))
+  activity.innerHTML = ', [<p>time</p><input type="number">'+
+  '<p>machine type</p><input type="number">]'
+  temp = document.getElementById("activities"+String(job))
+  j = document.getElementById("job"+String(job))
+  j.insertBefore(activity, temp)
+}
+
+function post_JSSP(){
+
+  var JSSP = []
+  var c
+  for (c=0;c<jobs; c++){
+    j = document.getElementById("job"+String(c+1))
+    JSSP.push([])
+    for (var child=0; child<j.children.length &&j.children[child].id != "activities"+String(c+1); child++){
+      temp = j.children[child]
+      JSSP[c].push([parseInt(temp.children[1].value), parseInt(temp.children[3].value)])
+    }
+  }
+
+  var data = {"number_machines": parseInt(document.getElementById("number_machines").value),
+    "time_limit": parseInt(document.getElementById("time_limit").value),
+    "machines":document.getElementById("machines").value,
+    "level":parseInt(document.getElementById("level").value),
+    "JSSP": JSSP}
+  //console.log(data)
+  //post(data, "/upload_JSSP")
+  ajax_upload("/upload_JSSP", data, success, error)
+}
+
+function post_story(){
+  var dial = []
+  var sce = []
+  var levels = []
+  for(var cont = 0; cont < dialogs; cont++){
+    dial.push([document.getElementById("text"+String(cont+1)).value,
+      document.getElementById("char"+String(cont+1)).value,
+      document.getElementById("pos"+String(cont+1)).value])
+  }
+  for(var cont = 0; cont < scenes; cont++){
+    sce.push([document.getElementById("back"+String(cont+1)).value,
+      parseInt(document.getElementById("frame"+String(cont+1)).value)])
+  }
+  unl = document.getElementById("unlock")
+  for (cont = 1; cont < unl.children.length; cont+=2){
+    levels.push(parseInt(unl.children[cont].value))
+  }
+  var data = { "dialogs": dial,
+  "scenes": sce,
+  "levels": levels
+  }
+  //console.log(data)
+  //post(data, "/upload_story")
+  ajax_upload("/upload_story", data, success, error)
+}
+
+function post(data, path){
+  data.authenticity_token= window._token
+
+  form = document.createElement("form")
+  form.method = 'post'
+  form.action = path
+  for (key in data){
+    element = document.createElement("input")
+    element.type = 'hidden'
+    element.name = key
+    element.value = data[key]
+    form.appendChild(element)
+  }
+  document.body.appendChild(form)
+  form.submit()
+  console.log("khj")
+}
+
+var success = function(response){
+  console.log(response)
+}
+var error = function(jqXHR, exception){
+  msg = getErrorMsg(jqXHR, exception)
+  var response = {message: msg}
+  console.log(response)
+}
+function sleep(m){
+  const start = Date.now()
+  let currDate = null
+  do {
+    currDate = Date.now()
+  } while (currDate-start < m);
+}
+function upload_JSSP(){
+  //JSSP = [[[22,0],[15,1]],[[30,3]]]
+
+  var url = "/upload_JSSP"
+
+  var JSSP = [[[1, 0], [1, 1], [1, 2]], [[1, 0], [1, 1], [1, 2]], [[1, 0], [1, 1], [1, 2]]]
+  //JSSP = [[[time_cost, machine_type]=>activity(in order)]=>job]
+  var data = {"number_machines": 3, "time_limit": 5, "machines":"012","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[22, 1], [13, 2], [5, 0]], [[96, 1], [48, 0], [27, 2]], [[22, 2], [24, 1], [45, 0]]]
+  var data = {"number_machines": 3, "time_limit": 194, "machines":"012","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[43, 0], [26, 2], [10, 1]], [[93, 0], [95, 2], [54, 1]], [[43, 2], [47, 0], [89, 1]]]
+  var data = {"number_machines": 3, "time_limit": 293, "machines":"012","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[65, 1], [39, 0], [15, 2]], [[90, 2], [44, 1], [81, 0]], [[64, 1], [70, 2], [34, 0]]]
+  var data = {"number_machines": 3, "time_limit": 283, "machines":"012","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[86, 0], [52, 1], [19, 2]], [[87, 1], [91, 2], [9, 0]], [[85, 1], [93, 0], [78, 2]]]
+  var data = {"number_machines": 3, "time_limit": 343, "machines":"012","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[46, 2], [22, 1], [18, 0], [46, 3]], [[68, 0], [54, 3], [41, 2], [31, 1]], [[88, 3], [9, 1], [82, 2], [87, 0]], [[37, 0], [54, 1], [8, 2], [25, 3]]]
+  var data = {"number_machines": 4, "time_limit": 266, "machines":"0123","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[92, 0], [43, 1], [36, 3], [92, 2]], [[36, 1], [9, 3], [81, 2], [62, 0]], [[76, 2], [17, 1], [65, 3], [74, 0]], [[74, 0], [8, 2], [16, 3], [49, 1]]]
+  var data = {"number_machines": 4, "time_limit":302 , "machines":"0123","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[38, 2], [64, 0], [53, 1], [38, 3]], [[4, 2], [63, 3], [22, 0], [93, 1]], [[64, 1], [25, 2], [48, 0], [61, 3]], [[12, 0], [61, 2], [24, 3], [73, 1]]]
+  var data = {"number_machines": 4, "time_limit": 308, "machines":"0123","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[26, 2], [29, 0], [33, 3], [93, 1], [62, 4]], [[16, 3], [4, 0], [96, 1], [10, 2], [22, 4]], [[2, 3], [78, 0], [77, 1], [43, 4], [7, 2]], [[15, 3], [93, 4], [3, 2], [38, 0], [28, 1]]]
+  var data = {"number_machines": 5, "time_limit": 336, "machines":"01234","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+  sleep(3000)
+  var JSSP = [[[52, 0], [58, 4], [66, 2], [86, 3], [24, 1]], [[32, 1], [7, 2], [92, 0], [20, 3], [44, 4]], [[4, 1], [57, 0], [54, 2], [85, 3], [13, 4]], [[29, 1], [87, 4], [5, 2], [76, 0], [55, 3]]]
+  var data = {"number_machines": 5, "time_limit": 385, "machines":"01234","JSSP": JSSP, "level": 1}
+  //console.log(data)
+  ajax_upload(url, data, success, error)
+}
+
+
+
+function getErrorMsg(jqXHR, exception) {
+    var msg = '';
+    if (jqXHR.status === 0) {
+        msg = 'Not connect.\n Verify Network.';
+    } else if (jqXHR.status == 404) {
+        msg = 'Requested page not found. [404]';
+    } else if (jqXHR.status == 500) {
+        msg = 'Internal Server Error [500].';
+    } else if (exception === 'parsererror') {
+        msg = 'Requested JSON parse failed.';
+    } else if (exception === 'timeout') {
+        msg = 'Time out error.';
+    } else if (exception === 'abort') {
+        msg = 'Ajax request aborted.';
+    } else {
+        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+    }
+    return msg
+  }
+
+function ajax_upload(url, data, success, error){
+  data.authenticity_token= window._token
+  console.log(data)
+
+  $.ajax({
+    url: url,
+    data: data,
+    type: "POST",
+    success: success,
+    error: error
+  })
+}
+</script>

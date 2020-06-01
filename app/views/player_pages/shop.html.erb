@@ -1,0 +1,255 @@
+<script src="/assets/jquery.min.js"></script>
+<script src="/assets/rangeslider.min.js"></script>
+<%= stylesheet_link_tag "rangeslider.css" %>
+<style>
+html,
+body {
+font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+color: #404040;
+height: 100%;
+margin: 0;
+}
+
+body {
+padding: 0 20px;
+color: #716894;
+}
+
+.main {
+width: 400px;
+margin: auto;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+label {
+display: block;
+margin-bottom: 2.5em;
+font-size: 13px;
+font-weight: bold;
+}
+
+.rangeslider__tooltip {
+display: block;
+margin-top: 2.5em;
+font-size: 12px;
+color: #a59eb5;
+}
+
+.rangeslider,
+input[type='range'] {
+max-width: 400px;
+}
+
+.rangeslider__handle {
+border-radius: 22px;
+line-height: 42px;
+text-align: center;
+font-weight: bold;
+
+&:after {
+  background: 0;
+}
+}
+
+.rangeslider,
+.rangeslider__fill {
+display: block;
+border-radius: 10px;
+}
+
+.rangeslider {
+background: #e6e5ea;
+  background-image:
+  linear-gradient(
+    to right,
+    #4bc67d 30%, #f1c40f 45%, #b94a48 99%
+);
+position: relative;
+}
+
+.rangeslider--horizontal {
+height: 10px;
+width: 100%;
+}
+
+.rangeslider--vertical {
+width: 20px;
+min-height: 150px;
+max-height: 100%;
+}
+
+.rangeslider--disabled {
+filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+opacity: 0.4;
+}
+
+.rangeslider__fill {
+// background: #4bc67d;
+position: absolute;
+}
+.rangeslider--horizontal .rangeslider__fill {
+top: 0;
+height: 100%;
+}
+.rangeslider--vertical .rangeslider__fill {
+bottom: 0;
+width: 100%;
+}
+
+.rangeslider__handle {
+background: white;
+border: 6px solid #4bc67d;
+cursor: pointer;
+display: inline-block;
+width: 40px;
+height: 40px;
+position: absolute;
+-moz-border-radius: 50%;
+-webkit-border-radius: 50%;
+border-radius: 50%;
+
+&.js-low {
+  border-color: #4bc67d;
+}
+
+&.js-med {
+  border-color: #f1c40f;
+}
+
+&.js-high {
+  border-color: #b94a48;
+}
+}
+.rangeslider__handle:after {
+content: "";
+display: block;
+width: 18px;
+height: 18px;
+margin: auto;
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+-moz-border-radius: 50%;
+-webkit-border-radius: 50%;
+border-radius: 50%;
+}
+.rangeslider__handle:active {
+
+}
+.rangeslider--horizontal .rangeslider__handle {
+top: -20px;
+touch-action: pan-y;
+-ms-touch-action: pan-y;
+}
+.rangeslider--vertical .rangeslider__handle {
+left: -10px;
+touch-action: pan-x;
+-ms-touch-action: pan-x;
+}
+
+input[type="range"]:focus + .rangeslider .rangeslider__handle {
+-moz-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+-webkit-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+}
+
+</style>
+<%puntos = []%>
+<%for i in puntos%>
+
+<p><%=i[0]%></p> <input id= <%= i[0]%> type = "number">
+
+<%end%>
+
+<!--
+  rangeslider.js
+  https://github.com/andreruffert/rangeslider.js
+  by André Ruffert - @andreruffert
+-->
+<div class="main">
+  <label for="panel_size">Panel Size</label>
+  <input
+      type="range"
+      name="participants"
+      min="5"
+      max="51"
+      value="20"
+  >
+  <span class="rangeslider__tooltip" id ="range-tooltip"></span>
+</div>
+
+
+<script>
+function range(start, end){
+  var j
+  var ran=[]
+  for(j=start;j<=end; j++){
+    ran[j-start]=j
+  }
+  return ran
+}
+const $element = $('input[type="range"]');
+const $tooltip = $('#range-tooltip');
+const sliderStates = [
+  {name: "low", tooltip: "Great, we're confident we can complete your project within <strong>24 hours</strong> of launch.", range: range(5, 26) },
+  {name: "med", tooltip: "Looks good! We can complete a project of this size within <strong>48 hours</strong> of launch.", range: range(26, 51)},
+  {name: "high", tooltip: "With a project of this size we'd like to talk with you before setting a completion timeline.", range: [51] },
+];
+var currentState;
+var $handle;
+
+$element
+  .rangeslider({
+    polyfill: false,
+    onInit: function() {
+      $handle = $('.rangeslider__handle', this.$range);
+      updateHandle($handle[0], this.value);
+      updateState($handle[0], this.value);
+    }
+  })
+  .on('input', function() {
+    updateHandle($handle[0], this.value);
+    checkState($handle[0], this.value);
+  });
+
+// Update the value inside the slider handle
+function updateHandle(el, val) {
+  el.textContent = val;
+}
+
+// Check if the slider state has changed
+function checkState(el, val) {
+  // if the value does not fall in the range of the current state, update that shit.
+  if (!currentState ||!currentState.range.includes(parseInt(val))) {
+
+    updateState(el, val);
+  }
+}
+
+// Change the state of the slider
+function updateState(el, val) {
+  for (var j = 0; j < sliderStates.length; j++){
+    if (!currentState ||!currentState.range.includes(parseInt(val))) {
+      currentState = sliderStates[j];
+      // updateSlider();
+    }
+  }
+  // If the state is high, update the handle count to read 50+
+  if (currentState.name == "high") {
+    updateHandle($handle[0], "50+");
+  }
+  // Update handle color
+  $handle
+    .removeClass (function (index, css) {
+    return (css.match (/(^|\s)js-\S+/g) ||   []).join(' ');
+  })
+    .addClass("js-" + currentState.name);
+  // Update tooltip
+  $tooltip.html(currentState.tooltip);
+}
+</script>

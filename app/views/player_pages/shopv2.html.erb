@@ -1,0 +1,174 @@
+<style>
+  input[type=range] {
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 33px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+
+    background: linear-gradient(90deg, rgba(232,12,12,1) 2%, rgba(233,242,41,1) 48%, rgba(0,255,70,1) 100%);
+    border-radius: 13px;
+    border: 1px solid #000000;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #000000;
+    height: 50px;
+    width: 50px;
+    border-radius: 15px;
+    background: #1cef18;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -9.5px;
+  }
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg, rgba(232,12,12,1) 2%, rgba(233,242,41,1) 48%, rgba(0,255,70,1) 100%);
+  }
+  input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 33px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+    background: linear-gradient(90deg, rgba(232,12,12,1) 2%, rgba(233,242,41,1) 48%, rgba(0,255,70,1) 100%);
+    border-radius: 13px;
+    border: 1px solid #000000;
+  }
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #000000;
+    height: 50px;
+    width: 50px;
+    border-radius: 15px;
+    background: #1cef18;
+    cursor: pointer;
+  }
+  input[type=range]::-ms-track {
+    width: 100%;
+    height: 33px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  input[type=range]::-ms-fill-lower {
+    background: #2320e8;
+    border: 1px solid #000000;
+    border-radius: 26px;
+    box-shadow: 1px 1px 1px #000000;
+  }
+  input[type=range]::-ms-fill-upper {
+    background: #2320e8;
+    border: 1px solid #000000;
+    border-radius: 26px;
+    box-shadow: 1px 1px 1px #000000;
+  }
+  input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 1px #000000;
+    border: 1px solid #000000;
+    height: 50px;
+    width: 50px;
+    border-radius: 15px;
+    background: #1cef18;
+    cursor: pointer;
+  }
+  input[type=range]:focus::-ms-fill-lower {
+    background: #2320e8;
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: #2320e8;
+  }
+</style>
+<style class="innerNumber">
+  input[type=range]::-webkit-slider-thumb:before{content:"1"; color:"black";}
+  input[type=range]::-ms-thumb:before{content:"1"; color:"black";}
+  input[type=range]::-moz-range-thumb:before{content:"1"; color:"black";}
+  p:before{content:"kjhkjhkj";}
+</style>
+<%puntos = []%>
+<%for i in puntos%>
+
+<p><%=i[0]%></p> <input id= <%= i[0]%> type = "number">
+
+<%end%>
+
+<p>hola</p>
+
+<input type="range" class="istyle" />
+
+
+<script>
+function range(start, end){
+  var j
+  var ran=[]
+  for(j=start;j<=end; j++){
+    ran[j-start]=j
+  }
+  return ran
+}
+const $element = $('input[type="range"]');
+const sliderStates = [
+  {name: "low", range: range(5, 26) },
+  {name: "med", range: range(26, 51)},
+  {name: "high", range: [51] },
+];
+var currentState;
+var $handle;
+
+element = document.getElementById('si')
+console.log(element)
+$element
+  .on('load', function(){
+    $handle = $('.rangeslider__handle', this.$range);
+    updateHandle($handle[0], this.value);
+    updateState($handle[0], this.value);
+  })
+  .on('input', function() {
+    $handle = $('.rangeslider__handle', this.$range);
+    updateHandle($handle[0], this.value);
+    checkState($handle[0], this.value);
+  });
+
+// Update the value inside the slider handle
+function updateHandle(el, val) {
+  el.textContent = val;
+}
+
+// Check if the slider state has changed
+function checkState(el, val) {
+  // if the value does not fall in the range of the current state, update that shit.
+  if (!currentState ||!currentState.range.includes(parseInt(val))) {
+    updateState(el, val);
+  }
+}
+
+// Change the state of the slider
+function updateState(el, val) {
+  for (var j = 0; j < sliderStates.length; j++){
+    if (!currentState || !currentState.range.includes(parseInt(val))) {
+      currentState = sliderStates[j];
+      // updateSlider();
+    }
+  }
+  // If the state is high, update the handle count to read 50+
+  if (currentState.name == "high") {
+    updateHandle($handle[0], "50+");
+  }
+  // Update handle color
+  $handle
+    .removeClass (function (index, css) {
+    return (css.match (/(^|\s)js-\S+/g) ||   []).join(' ');
+  })
+    .addClass("js-" + currentState.name);
+
+}
+</script>

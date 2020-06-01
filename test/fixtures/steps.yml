@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  idGame: 1
+  number_step: 1
+  idActivity: 1
+  number_machine: 1
+  position: 1
+
+two:
+  idGame: 1
+  number_step: 1
+  idActivity: 1
+  number_machine: 1
+  position: 1

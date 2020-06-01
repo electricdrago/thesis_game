@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  strength: 1
+  intelligence: 1
+  curiosity: 1
+  organization: 1
+  construction: 1
+
+two:
+  strength: 1
+  intelligence: 1
+  curiosity: 1
+  organization: 1
+  construction: 1

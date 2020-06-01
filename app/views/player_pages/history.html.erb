@@ -1,0 +1,65 @@
+<!-- falta todo lo de imagenes la info se debe de obtener en la bd -->
+<style>
+  .dialog-box {
+    width: 90%;
+    height: 300px;
+    border: 2px solid green;
+    padding: 25px;
+    position: relative;
+
+  }
+  .d-right {
+    border-radius: 35px 35px 7px;
+    left: 3%;
+  }
+  .d-left {
+    border-radius: 35px 35px 35px 7px;
+    left: 6%;
+  }
+  #dialog {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 35px;
+    color: blue;
+
+  }
+  #next-but{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: green;
+    position: absolute;
+    bottom: 10px;
+    right: 25px;
+    text-decoration: underline;
+
+  }
+
+</style>
+
+<div id= "box" class= "dialog-box d-right"><p id="dialog">Yes you can start by doing blas</p><p id="next-but">xlick anything</p></div>
+
+
+<%
+@dialogs = [["hey", "image", "d-left"],["what?", "image", "d-right"], ["hello :P", "image", "d-left"], ["hey", "image", "d-right"],["what?", "image", "d-left"],
+["hello :P", "image", "d-right"]]
+%>
+<script>
+var dialogs = <%=raw @dialogs.to_json%>
+var moment = -1
+next_dialog()
+
+function next_dialog(){
+  moment+=1
+  if (moment>= dialogs.length){
+    moment = -1
+  } else {
+    var dialog_box = document.getElementById("box")
+    dialog_box.classList.remove("d-left","d-right")
+    dialog_box.classList.add(dialogs[moment][2])
+    dialog = document.getElementById("dialog")
+    dialog.innerHTML = dialogs[moment][0]
+  }
+}
+document.addEventListener("click",next_dialog)
+
+</script>

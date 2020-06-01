@@ -10,7 +10,76 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_20_203742) do
+ActiveRecord::Schema.define(version: 2020_06_01_012651) do
+
+  create_table "dialogs", force: :cascade do |t|
+    t.integer "storyId"
+    t.integer "order"
+    t.string "dialog"
+    t.string "character"
+    t.string "side"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "games_playeds", force: :cascade do |t|
+    t.integer "idUser"
+    t.integer "idJSSP"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "end_points"
+    t.boolean "finished", default: false
+    t.integer "downloaded", default: 0
+  end
+
+  create_table "jssp_activities", force: :cascade do |t|
+    t.integer "number_job"
+    t.integer "idJSSP"
+    t.integer "order"
+    t.integer "time_cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "machine_type"
+  end
+
+  create_table "jssps", force: :cascade do |t|
+    t.integer "number_machines"
+    t.integer "time_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "diff_machines"
+    t.string "machines"
+    t.integer "level", default: 0
+    t.integer "number", default: 0
+  end
+
+  create_table "scenes", force: :cascade do |t|
+    t.integer "storyId"
+    t.string "background"
+    t.integer "frame"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "steps", force: :cascade do |t|
+    t.integer "idGame"
+    t.integer "number_step"
+    t.integer "idActivity"
+    t.integer "number_machine"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stories", force: :cascade do |t|
+    t.integer "strength", default: 0
+    t.integer "intelligence", default: 0
+    t.integer "curiosity", default: 0
+    t.integer "organization", default: 0
+    t.integer "construction", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -18,6 +87,16 @@ ActiveRecord::Schema.define(version: 2020_01_20_203742) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "IntelligencePoints", default: 0
+    t.integer "CuriosityPoints", default: 0
+    t.integer "OrganizationPoints", default: 0
+    t.integer "ConstructionPoints", default: 0
+    t.string "stories"
+    t.float "points", default: 0.0
+    t.integer "last_Game", default: -1
+    t.integer "last_beginner", default: -1
+    t.integer "last_intermidiate", default: -1
+    t.integer "last_advanced", default: -1
     t.index ["name"], name: "index_users_on_name", unique: true
   end
 
