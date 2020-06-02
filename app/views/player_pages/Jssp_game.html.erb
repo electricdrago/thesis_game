@@ -33,7 +33,7 @@
 
 <h3 style="color:red">User: <%=current_user.name%> </h3>
 
-<div id="jobs" style="width:100%"></div>
+<div id="jobs" style="width:93%"></div>
 <div id="machines"></div>
 <button type="button" onclick="endGame()">Next Game</button> <br> <br>
 <%= link_to 'logout', 'logout' %>
@@ -122,7 +122,7 @@ function addJob(id,activities){
 
   var job = document.createElement("div")
   job.setAttribute("id","job"+String(id))
-  job.setAttribute("style", "height: 100px;")
+  job.setAttribute("style", "height: 85px;")
   var j
   for (j=0; j<activities.length; j++){
     var activity = document.createElement("div")
@@ -156,7 +156,7 @@ function createMachines(amount){
     var machine = document.createElement("div")
     machine.setAttribute("id", "machine"+String(j))
     machine.setAttribute("class", "machine")
-    machine.setAttribute("style", "height: 100px; width:100%; border: 9px solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
+    machine.setAttribute("style", "height: 85px; width:93%; border: 9px solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
     machine.setAttribute("ondrop", "drop(event)")
     machine.setAttribute("ondragover", "allowDrop(event)")
     machine.setAttribute("ondragleave", "deClass(event)")
