@@ -1,0 +1,16 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/electricdrago/thesis_game.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[remote "heroku"]
+	url = https://git.heroku.com/gentle-ridge-92464.git
+	fetch = +refs/heads/*:refs/remotes/heroku/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[atomGithub]
+	historySha = 31848f8f58fa58a549272098819a05998509d647
