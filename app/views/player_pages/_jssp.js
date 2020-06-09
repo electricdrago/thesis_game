@@ -409,6 +409,12 @@ class JSSProblem {
     return current_node
   }
 
+  isDependant(d, n){
+    if (d.activities.id == n.activities.id && d.id>n.id){
+      return true
+    }
+    return false
+  }
   fillTree(root, other_activities){
     other_activities = other_activities||[]
     root.was_changed = true
@@ -419,6 +425,13 @@ class JSSProblem {
     var i
     for(i = 0; i<other_activities.length; i++){
       var o_a = this.getNode(other_activities[i])
+      if (this.isDependant(root.activity, o_a.activity)){
+        toChange.splice(0, toChange.length)
+        this.seen_activities.clear()
+        this.pendant_activities.splice(0, this.pendant_activities.length)
+        move_not_possible("Activity cannot be placed here as there is a dependancy that could not be solved");
+        return
+      }
       o_a.was_changed=true
       toChange.push(o_a)
       this.pendant_activities.push(o_a)
@@ -429,7 +442,15 @@ class JSSProblem {
       var tempNodes = []
       var j
       for (j = 0; j<tempNext.length; j++){
-        tempNodes.push(this.getNode(tempNext[j], 1))
+        var o_a = this.getNode(tempNext[j], 1)
+        if (this.isDependant(root.activity, o_a.activity)){
+          toChange.splice(0, toChange.length)
+          this.seen_activities.clear()
+          this.pendant_activities.splice(0, this.pendant_activities.length)
+          move_not_possible("Activity cannot be placed here as there is a dependancy that could not be solved");
+          return
+        }
+        tempNodes.push(o_a)
       }
       tempNext.splice(0,tempNext.length)
 
