@@ -1,0 +1,7 @@
+<% activities = JsspActivity.where(idJSSP:  params[:id])
+@JSSA = []
+activities.each do |i|
+  @JSSA.push([i.id, i.number_job, i.order, i.time_cost, i.machine_type])
+end
+%>
+<p><%= @JSSA%></p>

@@ -9,6 +9,9 @@ class AdminController < ApplicationController
     end
   end
 
+  def jssp_info
+  end
+  
   def makeData
     prepareData
   end

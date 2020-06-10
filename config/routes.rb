@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   post 'upload_story' => 'admin#save_story'
   post 'end_game' => 'player_pages#end_game'
 
+  get 'jssp_info/:id' => 'admin#jssp_info'
+
   get 'prepare' => "admin#makeData"
   get 'download' => "admin#getData"
   get 'clean' => "admin#cleanMemory"
