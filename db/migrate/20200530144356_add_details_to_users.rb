@@ -1,5 +1,6 @@
 class AddDetailsToUsers < ActiveRecord::Migration[5.2]
   def change
+    add_column :users, :StrengthPoints, :integer, :default => 0
     add_column :users, :IntelligencePoints, :integer, :default => 0
     add_column :users, :CuriosityPoints, :integer, :default => 0
     add_column :users, :OrganizationPoints, :integer, :default => 0

@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   post 'upload_JSSP' => 'admin#save_JSSP'
   post 'upload_story' => 'admin#save_story'
   post 'end_game' => 'player_pages#end_game'
+  post 'read_story' => 'player_pages#readStory'
+  post 'add_points' => 'player_pages#addPoints'
 
   get 'jssp_info/:id' => 'admin#jssp_info'
 

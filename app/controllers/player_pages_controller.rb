@@ -50,11 +50,12 @@ class PlayerPagesController < ApplicationController
 
     points = [1, params[:points].to_i].min
     game.end_points = points
-    points = points*40 + (current_user.points*0.1)
+
+    #sum_g(sum_i(n^j))  max points on g games
+    n = 15
+    points = points*n + (current_user.points*0.1)
     current_user.points+=points
-    ####################
-    #########To bechanged
-    current_user.points = 0
+
 
     game.finished = true
 
@@ -63,7 +64,7 @@ class PlayerPagesController < ApplicationController
       end
     end
     #redirect_to 'shop'
-    redirect_to '/activity_assignment'
+    redirect_to '/shop'
   end
 
   def restart_game
@@ -74,23 +75,23 @@ class PlayerPagesController < ApplicationController
       if current_user.save
       end
     end
-    redirect_to 'activity_assignment'
+    redirect_to '/activity_assignment'
   end
 
   def readStory
     if !current_user.stories
       current_user.stories = "0"
     end
-    if current_user.stories.length<=params[:storyId]
-      current_user.stories+="0"*(params[:storyId]+1-current_user.stories.length)
+    if current_user.stories.length<=params[:storyId].to_i
+      current_user.stories+="0"*(params[:storyId].to_i+1-current_user.stories.length)
     end
 
-    current_user.stories[params[:storyId]] = "1"
+    current_user.stories[params[:storyId].to_i] = "1"
 
     if current_user.save
     end
 
-    redirect_to 'shop'
+    redirect_to '/activity_assignment'
   end
 
   def shop
@@ -98,6 +99,9 @@ class PlayerPagesController < ApplicationController
     spentPoints = current_user.StrengthPoints+current_user.IntelligencePoints+
       current_user.CuriosityPoints+ current_user.OrganizationPoints+ current_user.ConstructionPoints
 
+    @items = [["Strength",current_user.StrengthPoints,current_user.StrengthPoints],["Intelligence",current_user.IntelligencePoints,current_user.IntelligencePoints],
+      ["Curiosity",current_user.CuriosityPoints,current_user.CuriosityPoints],["Organization",current_user.OrganizationPoints,current_user.OrganizationPoints],
+      ["Construction",current_user.ConstructionPoints,current_user.ConstructionPoints]]
     @extra_points = current_user.points-spentPoints
 
   end
@@ -106,33 +110,35 @@ class PlayerPagesController < ApplicationController
     #count that added points equal to total points
     params = points_params
 
-    extra_points = params[:StrengthPoints]
+    extra_points = params[:StrengthPoints].to_i
     previous_points = current_user.StrengthPoints
-    current_user.StrengthPoints+= params[:StrengthPoints]
+    current_user.StrengthPoints+= params[:StrengthPoints].to_i
 
-    extra_points += params[:IntelligencePoints]
+    extra_points += params[:IntelligencePoints].to_i
     previous_points+= current_user.IntelligencePoints
-    current_user.IntelligencePoints+=params[:IntelligencePoints]
+    current_user.IntelligencePoints+=params[:IntelligencePoints].to_i
 
-    extra_points += params[:CuriosityPoints]
+    extra_points += params[:CuriosityPoints].to_i
     previous_points+= current_user.CuriosityPoints
-    current_user.CuriosityPoints+=params[:CuriosityPoints]
+    current_user.CuriosityPoints+=params[:CuriosityPoints].to_i
 
-    extra_points += params[:OrganizationPoints]
+    extra_points += params[:OrganizationPoints].to_i
     previous_points+= current_user.OrganizationPoints
-    current_user.OrganizationPoints+=params[:OrganizationPoints]
+    current_user.OrganizationPoints+=params[:OrganizationPoints].to_i
 
-    extra_points += params[:ConstructionPoints]
+    extra_points += params[:ConstructionPoints].to_i
     previous_points+= current_user.ConstructionPoints
-    current_user.ConstructionPoints+=params[:ConstructionPoints]
+    current_user.ConstructionPoints+=params[:ConstructionPoints].to_i
+
 
     if previous_points+extra_points>current_user.points
-      current_user = nil
+
     else
       if current_user.save
       end
     end
-    redirect_to 'story'
+
+    redirect_to '/story'
   end
 
   def history
@@ -144,7 +150,10 @@ class PlayerPagesController < ApplicationController
       current_user.IntelligencePoints, current_user.CuriosityPoints,
       current_user.OrganizationPoints, current_user.ConstructionPoints).order(id: :asc)
 
-    strCount = Story.maximum(:id).to_i
+    strCount = Story.maximum(:id).to_i+1
+    if !current_user.stories
+      current_user.stories = "0"
+    end
     if current_user.stories.length < strCount
       current_user.stories += "0"*(strCount-current_user.stories.length)
       current_user.save
@@ -155,7 +164,14 @@ class PlayerPagesController < ApplicationController
         break
       end
     end
-    @story ||= Story.find(2)
+    #@story ||= Story.find(2)
+    @story ||= Story.first
+    #@story = Story.find(2)
+    dialogs = Dialog.where(storyId: @story.id).order(:order)
+    @dialogs = []
+    dialogs.each do |j|
+      @dialogs.push([j.dialog, j.character, j.side])
+    end
   end
 
 

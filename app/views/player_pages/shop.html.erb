@@ -19,9 +19,6 @@ color: #716894;
 width: 400px;
 margin: auto;
 position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
 }
 
 label {
@@ -48,10 +45,9 @@ border-radius: 22px;
 line-height: 42px;
 text-align: center;
 font-weight: bold;
-
-&:after {
-  background: 0;
 }
+.rangeslider__handle:after {
+  background: 0;
 }
 
 .rangeslider,
@@ -71,7 +67,7 @@ position: relative;
 }
 
 .rangeslider--horizontal {
-height: 10px;
+height: 23px;
 width: 100%;
 }
 
@@ -87,7 +83,7 @@ opacity: 0.4;
 }
 
 .rangeslider__fill {
-// background: #4bc67d;
+//background: #4bc67d;
 position: absolute;
 }
 .rangeslider--horizontal .rangeslider__fill {
@@ -102,27 +98,29 @@ width: 100%;
 .rangeslider__handle {
 background: white;
 border: 6px solid #4bc67d;
+font-size: 20px;
 cursor: pointer;
 display: inline-block;
-width: 40px;
-height: 40px;
+width: 50px;
+height: 50px;
 position: absolute;
 -moz-border-radius: 50%;
 -webkit-border-radius: 50%;
 border-radius: 50%;
-
-&.js-low {
+}
+.rangeslider__handle.js-low {
   border-color: #4bc67d;
 }
 
-&.js-med {
+.rangeslider__handle.js-med {
   border-color: #f1c40f;
 }
 
-&.js-high {
+.rangeslider__handle.js-high {
   border-color: #b94a48;
 }
-}
+
+
 .rangeslider__handle:after {
 content: "";
 display: block;
@@ -159,32 +157,43 @@ box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
 }
 
 </style>
-<%puntos = []%>
-<%for i in puntos%>
-
-<p><%=i[0]%></p> <input id= <%= i[0]%> type = "number">
-
-<%end%>
-
 <!--
   rangeslider.js
   https://github.com/andreruffert/rangeslider.js
   by André Ruffert - @andreruffert
 -->
 <div class="main">
-  <label for="panel_size">Panel Size</label>
+  <p id="extraPoints"><%=@extra_points%></p>
+
+<%
+z = 0
+for i in @items%>
+
+<!--<p><%=i[0]%></p> <input id= <%= i[0]%> type = "number" value=<%=i[1]%>>-->
+<div id=<%= z%>>
+  <% z+=1%>
+  <label for="panel_size"><%=i[0]%></label>
   <input
       type="range"
       name="participants"
-      min="5"
-      max="51"
-      value="20"
+      min="0"
+      max="100"
+      value="<%=i[1]%>"
   >
   <span class="rangeslider__tooltip" id ="range-tooltip"></span>
 </div>
+<br>
+<br>
+
+<%end%>
+<button type="button" onclick="buy()">Finish</button> <br> <br>
+</div>
+
 
 
 <script>
+var skills = <%=raw @items.to_json%>
+var extraPoints = <%= @extra_points %>
 function range(start, end){
   var j
   var ran=[]
@@ -193,46 +202,98 @@ function range(start, end){
   }
   return ran
 }
-const $element = $('input[type="range"]');
-const $tooltip = $('#range-tooltip');
+function refresh(){
+  console.log("mouse up")
+  var event = document.createEvent('Event')
+  event.initEvent('input', true, true)
+  event.initEvent('change', true, true)
+  this.dispatchEvent(event)
+}
+const $elements = $('input[type="range"]');
+
+const $tooltip = $('.rangeslider__tooltip');
 const sliderStates = [
-  {name: "low", tooltip: "Great, we're confident we can complete your project within <strong>24 hours</strong> of launch.", range: range(5, 26) },
-  {name: "med", tooltip: "Looks good! We can complete a project of this size within <strong>48 hours</strong> of launch.", range: range(26, 51)},
-  {name: "high", tooltip: "With a project of this size we'd like to talk with you before setting a completion timeline.", range: [51] },
+  {name: "low", tooltip: "Great, we're confident we can complete your project within <strong>24 hours</strong> of launch.", range: range(0, 25) },
+  {name: "med", tooltip: "Looks good! We can complete a project of this size within <strong>48 hours</strong> of launch.", range: range(26, 49)},
+  {name: "high", tooltip: "With a project of this size we'd like to talk with you before setting a completion timeline.", range: [50] },
 ];
 var currentState;
 var $handle;
+var i
+for (i = 0; i < $elements.length; i++){
+  $element = $elements[i]
+  $elements
+    .rangeslider({
+      polyfill: false,
+      onInit: function() {
+        //var j
+        //for (j = 0; j < this.childNodes.length; j++){
+          //if (this.childNodes[j].className == '.rangeslider__handle'){
+            //$handle = this.childNodes[j];
+          //}
 
-$element
-  .rangeslider({
-    polyfill: false,
-    onInit: function() {
-      $handle = $('.rangeslider__handle', this.$range);
-      updateHandle($handle[0], this.value);
-      updateState($handle[0], this.value);
-    }
-  })
-  .on('input', function() {
-    updateHandle($handle[0], this.value);
-    checkState($handle[0], this.value);
-  });
+        $handle = null
+        $handle = $('.rangeslider__handle', this.$range);
+        updateHandle($handle, this.value);
+        $tool = $('.rangeslider__tooltip', this.parentElement);
+        updateState($handle, this.value, $tool);
+      }
+    })
+    .on('input', function() {
+      $handle = null
+      $handle = $('.rangeslider__handle', this.parentElement);
+
+      updateHandle($handle, this.value);
+      $tool = $('.rangeslider__tooltip', this.parentElement);
+      checkState($handle, this.value, $tool);
+      
+    })
+    .on('change', function(){
+      if (parseInt(this.value) < skills[this.parentElement.id][1]){
+        this.value = String(skills[this.parentElement.id][1])
+
+        var event = document.createEvent('Event')
+        event.initEvent('input', true, true)
+        //event.initEvent('change', true, true)
+        this.dispatchEvent(event)
+        return
+
+      }
+      if (parseInt(this.value)-skills[this.parentElement.id][2]>extraPoints){
+        this.value = String(skills[this.parentElement.id][2]+extraPoints)
+
+        var event = document.createEvent('Event')
+        event.initEvent('input', true, true)
+        //event.initEvent('change', true, true)
+        this.dispatchEvent(event)
+        return
+      }
+      extraPoints -= parseInt(this.value)-skills[this.parentElement.id][2]
+      $('#extraPoints').html(extraPoints)
+      skills[this.parentElement.id][2] = parseInt(this.value)
+    });
+}
 
 // Update the value inside the slider handle
 function updateHandle(el, val) {
-  el.textContent = val;
+  //console.log(val)
+  el.text(val);
+
+  //console.log(el.textContent)
+
 }
 
 // Check if the slider state has changed
-function checkState(el, val) {
+function checkState(el, val, tool) {
   // if the value does not fall in the range of the current state, update that shit.
   if (!currentState ||!currentState.range.includes(parseInt(val))) {
 
-    updateState(el, val);
+    updateState(el, val, tool);
   }
 }
 
 // Change the state of the slider
-function updateState(el, val) {
+function updateState(el, val, tool) {
   for (var j = 0; j < sliderStates.length; j++){
     if (!currentState ||!currentState.range.includes(parseInt(val))) {
       currentState = sliderStates[j];
@@ -241,15 +302,49 @@ function updateState(el, val) {
   }
   // If the state is high, update the handle count to read 50+
   if (currentState.name == "high") {
-    updateHandle($handle[0], "50+");
+    //console.log("hi")
+    updateHandle(el, "50+");
   }
   // Update handle color
-  $handle
+
+  el
     .removeClass (function (index, css) {
     return (css.match (/(^|\s)js-\S+/g) ||   []).join(' ');
   })
     .addClass("js-" + currentState.name);
   // Update tooltip
-  $tooltip.html(currentState.tooltip);
+  tool.html(currentState.tooltip);
+}
+
+function buy(){
+
+  var data = {
+    <%
+    z = 0
+    for i in @items%>
+      "<%= raw i[0]%>Points": skills[<%=z%>][2]- skills[<%=z%>][1],
+      <%z+=1%>
+    <%end%>
+  }
+  //console.log(data)
+  create_post(data,"/add_points")
+}
+
+function create_post(data, path){
+  data.authenticity_token= window._token
+  console.log("creating form")
+  form = document.createElement("form")
+  form.method = 'post'
+  form.action = path
+  for (key in data){
+    element = document.createElement("input")
+    element.type = 'hidden'
+    element.name = key
+    element.value = data[key]
+    form.appendChild(element)
+  }
+  document.body.appendChild(form)
+  form.submit()
+  //console.log("khj")
 }
 </script>

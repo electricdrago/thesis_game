@@ -21,6 +21,7 @@ class treeNode{
 
     if(this.was_changed){
       wasChange = this.activity.change()
+      this.was_changed = false
     }
 
     if (wasChange){
@@ -32,9 +33,11 @@ class treeNode{
       }
     } else {
       for (i=0; i<this.next.length; i++){
-        this.next[i].depDone()
-        if (this.next[i].ready()){
-          newToChange.push(this.next[i])
+        if (!this.next[i].ready()){
+          this.next[i].depDone()
+          if (this.next[i].ready()){
+            newToChange.push(this.next[i])
+          }
         }
       }
 
@@ -327,7 +330,7 @@ class activities{
   getTimes(){
     var total_done = 0
     var j
-    for(j=0; j<this.activities.length && this.machine_activities[j]<0; j++){
+    for(j=0; j<this.activities.length && this.machine_activities[j]>=0; j++){
       total_done += this.activities[j].time_cost
     }
     return [this.total_cost, total_done]
@@ -347,15 +350,14 @@ class activities{
   }
   changeMachine(act_id, mach_id){
     this.machine_activities[act_id] = mach_id
-    if(act_id == this.next_id){
-      if(mach_id>=0){
-        this.next_id+=1
-        this.remaining_time -= this.activities[act_id].time_cost
-      } else {
-        this.next_id -=1
-        this.remaining_time += this.activities[act_id].time_cost
-      }
+    if(act_id == this.next_id && mach_id>=0){
+      this.next_id+=1
+      this.remaining_time -= this.activities[act_id].time_cost
+    } else if (act_id < this.next_id && mach_id<0){
+      this.next_id = act_id
+      this.remaining_time += this.activities[act_id].time_cost
     }
+
   }
 
   pendant_activities(){
@@ -390,7 +392,9 @@ class JSSProblem {
       tempInfo = this.activities[j].getTimes()
       total += tempInfo[0]
       total_done += tempInfo[1]
+      console.log(j, tempInfo)
     }
+    console.log( total, total_done)
     return total_done*1.0/total
   }
 
@@ -535,6 +539,7 @@ class solver {
   get_done(){
     return this.jssp.percentage_complete()
   }
+
 
   start(jssp, saved_steps){
     this.jssp = jssp

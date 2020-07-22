@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2020_06_01_012651) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "StrengthPoints", default: 0
     t.integer "IntelligencePoints", default: 0
     t.integer "CuriosityPoints", default: 0
     t.integer "OrganizationPoints", default: 0

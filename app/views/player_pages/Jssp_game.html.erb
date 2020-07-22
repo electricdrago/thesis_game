@@ -36,8 +36,10 @@
 <div id="jobs" style="width:93%"></div>
 <div id="machines"></div>
 <button type="button" onclick="endGame()">Next Game</button> <br> <br>
+<button type="button" onclick="print_per()">pp</button> <br> <br>
 <%= link_to 'logout', 'logout' %>
 <script>
+
 
 <%= render "jssp.js"%>
 
@@ -280,12 +282,17 @@ function checkMovement(activity, machine, position){
 
 }
 
+function print_per(){
+  console.log(slvr.get_done())
+}
+
 function endGame(){
   //Hacer un boton de tipo post o "hacerlo", pero todo al activar esta funcion
   var points = slvr.get_done()
   var data = {"points": points, "idGame":idGame}
   create_post(data,"/end_game")
 }
+
 function create_post(data, path){
   data.authenticity_token= window._token
   console.log("creating form")

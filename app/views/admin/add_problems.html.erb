@@ -38,8 +38,19 @@
 <div id ="dialogs">
   <div class = "1">
     <p>dialog: </p> <input type = "text" id = "text1">
-    <p>character image: </p> <input type = "text" id = "char1">
-    <p>left or right: </p> <input type = "text" id = "pos1" value = "left">
+    <p>character image: </p>
+    <select name="image" id="char1">
+      <% images = Dir.glob("app/assets/images/nicubunu_Game_baddie_*.png")%>
+      <% images.each do |i|%>
+        <% name = i.split('/').last %>
+        <option value= <%= raw name%> > <%= raw name.split('_').last%> </option>
+      <% end %>
+    </select>
+    <p> position: </p>
+    <select name="position" id="pos1">
+      <option value="left">Left</option>
+      <option value="right">Right</option>
+    </select>
   </div>
   <div id = "nd"></div>
   <button type = "button" onclick="addDialog()">add dialog</button>
@@ -68,8 +79,19 @@ function addDialog(){
   dia = document.createElement("div")
   dia.setAttribute("class", String(dialogs))
   dia.innerHTML = '<p>dialog: </p> <input type = "text" id = "text'+String(dialogs)+'">'+
-  '<p>character image: </p> <input type = "text" id = "char'+String(dialogs)+'">'+
-  '<p>left or right: </p> <input type = "text" id = "pos'+String(dialogs)+'" value = "left">'
+  '<p>character image: </p>'+
+  '<select name="image" id="char'+String(dialogs)+'">'+
+    '<% images = Dir.glob("app/assets/images/nicubunu_Game_baddie_*.png")%>'+
+    '<% images.each do |i|%>'+
+      '<% name = i.split("/").last %>'+
+      '<option value= <%= raw name%> > <%= raw name.split("_").last%> </option>'+
+    '<% end %>'+
+  '</select>'+
+  '<p> position: </p>'+
+  '<select name="position" id="pos'+String(dialogs)+'">'+
+    '<option value="left">Left</option>'+
+    '<option value="right">Right</option>'+
+  '</select>'
   d = document.getElementById("dialogs")
   d.insertBefore(dia, document.getElementById("nd"))
 }
