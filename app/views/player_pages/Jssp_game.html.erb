@@ -29,15 +29,24 @@
     width: 30%;
     font-size: 40px
   }
+
+  .background {
+   background-image: url('assets/space.jpg');
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: cover;
+  }
 </style>
 
+<div class= "background">
 <h3 style="color:red">User: <%=current_user.name%> </h3>
 
-<div id="jobs" style="width:93%"></div>
+<div id="jobs" style="width:80%"></div>
 <div id="machines"></div>
+<div id="percentage">0%</div>
 <button type="button" onclick="endGame()">Next Game</button> <br> <br>
-<button type="button" onclick="print_per()">pp</button> <br> <br>
 <%= link_to 'logout', 'logout' %>
+</div>
 <script>
 
 
@@ -54,6 +63,7 @@ function moveValues(array, seed){
 var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
 var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
 var machine_type = ""
+var aliens =["assets/nicubunu_Game_baddie_Alien.png", "assets/nicubunu_Game_baddie_Billy.png", "assets/nicubunu_Game_baddie_Bricky.png"]
 <% @machine_type.each_char { |c|%>
   machine_type+=<%=c%>
 <%}%>
@@ -125,6 +135,8 @@ function addJob(id,activities){
   var job = document.createElement("div")
   job.setAttribute("id","job"+String(id))
   job.setAttribute("style", "height: 70px;")
+
+
   var j
   for (j=0; j<activities.length; j++){
     var activity = document.createElement("div")
@@ -134,8 +146,13 @@ function addJob(id,activities){
     activity.setAttribute("ondragstart", "drag(event)")
     activity.setAttribute("ondragend", "defaultDrop(event)")
     activity.setAttribute("style", "box-sizing: border-box; width: "+String(activities[j][0]/maxTime*100)+"%; "+
-        "height: 100%; float:left; background: "+ job_colors[id]+"; border: 10px solid "+machine_colors[activities[j][1]]+";")
+        "height: 100%; float:left; background: "+ job_colors[id]+"; border: .7vw solid; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
     var original_position = document.createElement("div")
+    var img = document.createElement("img")
+    img.setAttribute("src",aliens[activities[j][1]])
+    img.setAttribute("style", "height:100%; max-width:100%; pointer-events: none;")
+    //img.setAttribute("ondragstart", "function(event){event.preventBubble(); event.stopPropagation()}")
+    activity.appendChild(img)
     original_position.setAttribute("id", "original"+activity.id)
     original_position.setAttribute("style", "width:0 ;float:left;")
     job.appendChild(activity)
@@ -154,17 +171,24 @@ function addJob(id,activities){
 function createMachines(amount){
   var j
   for (j = 0; j < amount; j++){
-
+    var tempDiv = document.createElement("div")
+    tempDiv.setAttribute("style", "width:100%; height: 90px; ")
+    var img = document.createElement("img")
+    img.setAttribute("src",aliens[(parseInt(machine_type.charAt(j))||0)])
+    img.setAttribute("style", "max-height:70px; max-width:14%;float:left")
     var machine = document.createElement("div")
     machine.setAttribute("id", "machine"+String(j))
     machine.setAttribute("class", "machine")
-    machine.setAttribute("style", "height: 70px; width:93%; border: 9px solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
+    machine.setAttribute("style", "height: 70px; width:80%; float:left; border: .7vw solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
     machine.setAttribute("ondrop", "drop(event)")
     machine.setAttribute("ondragover", "allowDrop(event)")
     machine.setAttribute("ondragleave", "deClass(event)")
     var machines = document.getElementById("machines")
-    machines.appendChild(machine)
+    tempDiv.appendChild(img)
+    tempDiv.appendChild(machine)
+    machines.appendChild(tempDiv)
     small_space = document.createElement("div")
+
     small_space.setAttribute("style", "height: 10px")
     machines.appendChild(small_space)
   }
@@ -207,6 +231,8 @@ function move_activity(machine, position, activity, time_wasted, next_activity){
       mach.insertBefore(hidden_space,act)
     }
   }
+
+  $('#percentage').html(slvr.get_done()*100)
 
 }
 

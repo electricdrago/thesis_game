@@ -1,319 +1,171 @@
-<script src="/assets/jquery.min.js"></script>
-<script src="/assets/rangeslider.min.js"></script>
-<%= stylesheet_link_tag "rangeslider.css" %>
+
 <style>
-html,
+
+.bought {
+  opacity: .93 !important;
+}
+
+.over {
+  border: 0.5vw solid yellow !important;
+}
 body {
-font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
-color: #404040;
-height: 100%;
-margin: 0;
+ background-image: url('assets/lab.jpg');
+ background-repeat: no-repeat;
+ background-attachment: fixed;
+ background-size: cover;
 }
-
-body {
-padding: 0 20px;
-color: #716894;
-}
-
-.main {
-width: 400px;
-margin: auto;
-position: absolute;
-}
-
-label {
-display: block;
-margin-bottom: 2.5em;
-font-size: 13px;
-font-weight: bold;
-}
-
-.rangeslider__tooltip {
-display: block;
-margin-top: 2.5em;
-font-size: 12px;
-color: #a59eb5;
-}
-
-.rangeslider,
-input[type='range'] {
-max-width: 400px;
-}
-
-.rangeslider__handle {
-border-radius: 22px;
-line-height: 42px;
-text-align: center;
-font-weight: bold;
-}
-.rangeslider__handle:after {
-  background: 0;
-}
-
-.rangeslider,
-.rangeslider__fill {
-display: block;
-border-radius: 10px;
-}
-
-.rangeslider {
-background: #e6e5ea;
-  background-image:
-  linear-gradient(
-    to right,
-    #4bc67d 30%, #f1c40f 45%, #b94a48 99%
-);
-position: relative;
-}
-
-.rangeslider--horizontal {
-height: 23px;
-width: 100%;
-}
-
-.rangeslider--vertical {
-width: 20px;
-min-height: 150px;
-max-height: 100%;
-}
-
-.rangeslider--disabled {
-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
-opacity: 0.4;
-}
-
-.rangeslider__fill {
-//background: #4bc67d;
-position: absolute;
-}
-.rangeslider--horizontal .rangeslider__fill {
-top: 0;
-height: 100%;
-}
-.rangeslider--vertical .rangeslider__fill {
-bottom: 0;
-width: 100%;
-}
-
-.rangeslider__handle {
-background: white;
-border: 6px solid #4bc67d;
-font-size: 20px;
-cursor: pointer;
-display: inline-block;
-width: 50px;
-height: 50px;
-position: absolute;
--moz-border-radius: 50%;
--webkit-border-radius: 50%;
-border-radius: 50%;
-}
-.rangeslider__handle.js-low {
-  border-color: #4bc67d;
-}
-
-.rangeslider__handle.js-med {
-  border-color: #f1c40f;
-}
-
-.rangeslider__handle.js-high {
-  border-color: #b94a48;
-}
-
-
-.rangeslider__handle:after {
-content: "";
-display: block;
-width: 18px;
-height: 18px;
-margin: auto;
-position: absolute;
-top: 0;
-right: 0;
-bottom: 0;
-left: 0;
--moz-border-radius: 50%;
--webkit-border-radius: 50%;
-border-radius: 50%;
-}
-.rangeslider__handle:active {
+button {
+	color: white;
+	vertical-align: middle;
+	font-family: 'Rubik One', sans-serif;
+	text-decoration: none;
+	font-size: 2vw;
+	background-color: #3498db;
 
 }
-.rangeslider--horizontal .rangeslider__handle {
-top: -20px;
-touch-action: pan-y;
--ms-touch-action: pan-y;
-}
-.rangeslider--vertical .rangeslider__handle {
-left: -10px;
-touch-action: pan-x;
--ms-touch-action: pan-x;
-}
+.title {
+    margin-top: 2%;
+    margin-bottom: 3%;
+    position:relative;
+    color: blue;
+    font-size: 10vw;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 0px 0px 0 rgb(-12,184,243),
+                 -1px -1px 0 rgb(-24,172,231),
+                 -2px -2px 0 rgb(-36,160,219),
+                 -3px -3px 0 rgb(-48,148,207),
+                 -4px -4px 0 rgb(-59,137,196),
+                 -5px -5px 0 rgb(-71,125,184),
+                 -6px -6px 0 rgb(-83,113,172),
+                 -7px -7px 0 rgb(-95,101,160),
+                 -8px -8px 0 rgb(-107,89,148),
+                 -9px -9px  0 rgb(-119,77,136),
+                 -10px -10px 9px rgba(0,0,0,0.77),
+                 -10px -10px 1px rgba(0,0,0,0.5),
+                 0px 0px 9px rgba(0,0,0,.2);
 
-input[type="range"]:focus + .rangeslider .rangeslider__handle {
--moz-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
--webkit-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
 }
+.points {
+  background: white;
+  width: 22vw;
+  height: 10vw;
+  font-size: 3.5vw;
+  text-align: center;
+  align-items: center;
+  position: fixed;
+  top: 6%;
+  right:3%;
 
+}
 </style>
-<!--
-  rangeslider.js
-  https://github.com/andreruffert/rangeslider.js
-  by André Ruffert - @andreruffert
--->
-<div class="main">
-  <p id="extraPoints"><%=@extra_points%></p>
+
+<p class="title" style="padding-left:3%">Shop</p>
+<p id="extraPoints" class="points"><%=@extra_points.floor%> points Price: 10p</p>
+
 
 <%
+colors = ['red', 'yellow', 'green']
 z = 0
 for i in @items%>
 
-<!--<p><%=i[0]%></p> <input id= <%= i[0]%> type = "number" value=<%=i[1]%>>-->
-<div id=<%= z%>>
-  <% z+=1%>
-  <label for="panel_size"><%=i[0]%></label>
-  <input
-      type="range"
-      name="participants"
-      min="0"
-      max="100"
-      value="<%=i[1]%>"
-  >
-  <span class="rangeslider__tooltip" id ="range-tooltip"></span>
-</div>
-<br>
-<br>
+  <p style="font-size:3vw; background:white; opacity:.75; width: 22vw; height: 3vw; padding:3%; margin-bottom:.4vw"><%=i[0]%></p>
+  <div style="height: 6.5vw; width: 80%; background: rgba(255,255,255,.6); text-align:center; align-items:center; padding:3%">
+    <div id=<%= z%> style="height:5vw; width: 80%; top:16%; position:relative">
+      <%for j in 0..8%>
+        <div id= "<%= z %>,<%=j%>" class = "l<%= j/3 %>" onmouseover="select(this)" onmouseout="unselect(this)" onclick="buy_select(<%=z%>, <%=j%>)" style= "sizing: border-box;width:8%; height:100%;border: 0.5vw solid; float:left; background: <%=colors[j/3]%>; opacity: .3; " >  </div>
 
+      <%end%>
+
+    </div>
+    <button type="button" onclick="subs(this,<%=z%>)" style="width:4vw; height: 4vw; top:-40%; position:relative; font-size:3vw;">-</button>
+    <button type="button" onclick="plus(this,<%=z%>)" style="width:4vw; height: 4vw;top:-40%; position:relative; font-size:3vw;">+</button>
+  </div>
+  <br>
+  <br>
+<% z+=1%>
 <%end%>
-<button type="button" onclick="buy()">Finish</button> <br> <br>
-</div>
-
-
+<button type="button" onclick="buy()" style="position: fixed; bottom: 10%;right:5%; font-size:30px">Finish</button>
 
 <script>
 var skills = <%=raw @items.to_json%>
 var extraPoints = <%= @extra_points %>
-function range(start, end){
+//skills[this.parentElement.id][1] 0 name 1 original 2 new
+function buyTill(attr, amount){
   var j
-  var ran=[]
-  for(j=start;j<=end; j++){
-    ran[j-start]=j
+  for (j = 0; j < amount; j++){
+    pill = document.getElementById(String(attr)+","+String(j))
+    pill.classList.add("bought")
   }
-  return ran
 }
-function refresh(){
-  console.log("mouse up")
-  var event = document.createEvent('Event')
-  event.initEvent('input', true, true)
-  event.initEvent('change', true, true)
-  this.dispatchEvent(event)
+function removeFrom(attr, amount){
+  var j
+  for (j = amount; j < 9; j++){
+    pill = document.getElementById(String(attr)+","+String(j))
+    pill.classList.remove("bought")
+  }
 }
-const $elements = $('input[type="range"]');
-
-const $tooltip = $('.rangeslider__tooltip');
-const sliderStates = [
-  {name: "low", tooltip: "Great, we're confident we can complete your project within <strong>24 hours</strong> of launch.", range: range(0, 25) },
-  {name: "med", tooltip: "Looks good! We can complete a project of this size within <strong>48 hours</strong> of launch.", range: range(26, 49)},
-  {name: "high", tooltip: "With a project of this size we'd like to talk with you before setting a completion timeline.", range: [50] },
-];
-var currentState;
-var $handle;
 var i
-for (i = 0; i < $elements.length; i++){
-  $element = $elements[i]
-  $elements
-    .rangeslider({
-      polyfill: false,
-      onInit: function() {
-        //var j
-        //for (j = 0; j < this.childNodes.length; j++){
-          //if (this.childNodes[j].className == '.rangeslider__handle'){
-            //$handle = this.childNodes[j];
-          //}
-
-        $handle = null
-        $handle = $('.rangeslider__handle', this.$range);
-        updateHandle($handle, this.value);
-        $tool = $('.rangeslider__tooltip', this.parentElement);
-        updateState($handle, this.value, $tool);
-      }
-    })
-    .on('input', function() {
-      $handle = null
-      $handle = $('.rangeslider__handle', this.parentElement);
-
-      updateHandle($handle, this.value);
-      $tool = $('.rangeslider__tooltip', this.parentElement);
-      checkState($handle, this.value, $tool);
-      
-    })
-    .on('change', function(){
-      if (parseInt(this.value) < skills[this.parentElement.id][1]){
-        this.value = String(skills[this.parentElement.id][1])
-
-        var event = document.createEvent('Event')
-        event.initEvent('input', true, true)
-        //event.initEvent('change', true, true)
-        this.dispatchEvent(event)
-        return
-
-      }
-      if (parseInt(this.value)-skills[this.parentElement.id][2]>extraPoints){
-        this.value = String(skills[this.parentElement.id][2]+extraPoints)
-
-        var event = document.createEvent('Event')
-        event.initEvent('input', true, true)
-        //event.initEvent('change', true, true)
-        this.dispatchEvent(event)
-        return
-      }
-      extraPoints -= parseInt(this.value)-skills[this.parentElement.id][2]
-      $('#extraPoints').html(extraPoints)
-      skills[this.parentElement.id][2] = parseInt(this.value)
-    });
+for (i=0; i<skills.length; i++){
+  var div = document.getElementById(String(i))
+  var bought = skills[i][2]/10
+  buyTill(i,bought)
 }
 
-// Update the value inside the slider handle
-function updateHandle(el, val) {
-  //console.log(val)
-  el.text(val);
-
-  //console.log(el.textContent)
-
-}
-
-// Check if the slider state has changed
-function checkState(el, val, tool) {
-  // if the value does not fall in the range of the current state, update that shit.
-  if (!currentState ||!currentState.range.includes(parseInt(val))) {
-
-    updateState(el, val, tool);
-  }
-}
-
-// Change the state of the slider
-function updateState(el, val, tool) {
-  for (var j = 0; j < sliderStates.length; j++){
-    if (!currentState ||!currentState.range.includes(parseInt(val))) {
-      currentState = sliderStates[j];
-      // updateSlider();
+function buy_select(attr, level){
+  var points = level*10+10
+  var buying = points-skills[attr][2]
+  var bought
+  if (buying<0){
+    if(points < skills[attr][1]){
+      points = skills[attr][1]
     }
-  }
-  // If the state is high, update the handle count to read 50+
-  if (currentState.name == "high") {
-    //console.log("hi")
-    updateHandle(el, "50+");
-  }
-  // Update handle color
+    extraPoints += skills[attr][2]-points
+    $('#extraPoints').html(Math.floor(extraPoints))
 
-  el
-    .removeClass (function (index, css) {
-    return (css.match (/(^|\s)js-\S+/g) ||   []).join(' ');
-  })
-    .addClass("js-" + currentState.name);
-  // Update tooltip
-  tool.html(currentState.tooltip);
+    skills[attr][2]= points
+    bought = points/10
+    console.log(bought);
+    removeFrom(attr,bought)
+  } else {
+    if(buying>extraPoints){
+      buying = Math.floor(extraPoints/10)*10
+
+    }
+    extraPoints-=buying
+    $('#extraPoints').html(Math.floor(extraPoints))
+    skills[attr][2]+= buying
+    var bought = skills[attr][2]/10
+    console.log(bought);
+    buyTill(attr,bought)
+  }
+
+}
+
+
+function subs(e,id){
+
+  if (skills[id][2]-10 >= skills[id][1]){
+    skills[id][2]-=10
+    extraPoints += 10
+  }
+
+  $('#extraPoints').html(Math.floor(extraPoints))
+  var bought = skills[id][2]/10
+  console.log(bought);
+  removeFrom(id,bought)
+}
+
+function plus(e,id){
+
+  if (10<=extraPoints){
+    skills[id][2]+=10
+    extraPoints -= 10
+  }
+
+  $('#extraPoints').html(Math.floor(extraPoints))
+  var bought = skills[parseInt(id)][2]/10
+  console.log(bought);
+  buyTill(id,bought)
 }
 
 function buy(){
@@ -346,5 +198,12 @@ function create_post(data, path){
   document.body.appendChild(form)
   form.submit()
   //console.log("khj")
+}
+
+function unselect(target){
+  target.classList.remove("over")
+}
+function select(target){
+  target.classList.add("over")
 }
 </script>
