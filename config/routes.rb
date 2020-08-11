@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'main_pages#home'
   get 'home' => 'main_pages#home'
-  post 'sign_in' => 'users#signin'
+  get 'sign_in' => 'users#signin'
   get 'logout' => 'users#destroy'
 
   post 'save_step' => 'player_pages#save_step'

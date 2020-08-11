@@ -28,7 +28,7 @@ class AdminController < ApplicationController
   def save_story
     @message = ""
     levels=params[:levels]
-    
+
     @story = Story.new(strength: levels[0].to_i, intelligence: levels[1].to_i)
     if @story.save
       @message+='success'
@@ -44,7 +44,7 @@ class AdminController < ApplicationController
       end
     }
     params[:scenes].each{ |k,i|
-      @scene = Scene.new(storyId: @story.id, background: i[0], frame: i[1].to_i)
+      @scene = Scene.new(storyId: @story.id, background: i[0], frame: i[1].to_i, tutorial:i[2])
       if @scene.save
         @message+='success'
       else

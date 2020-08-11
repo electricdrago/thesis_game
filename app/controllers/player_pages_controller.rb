@@ -170,8 +170,18 @@ class PlayerPagesController < ApplicationController
     dialogs = Dialog.where(storyId: @story.id).order(:order)
     @dialogs = []
     dialogs.each do |j|
-      @dialogs.push([j.dialog, j.character, j.side])
+      @dialogs.push([j.dialog.gsub('!!user', current_user.name), j.character, j.side])
     end
+
+    scenes = Scene.where(storyId: @story.id).order(:frame)
+    @scenes = []
+    scenes.each do |j|
+      @scenes.push([j.frame, j.background, j.tutorial])
+    end
+    if @scenes.length <= 0
+      @scenes.push([0,"lab.jpg",false])
+    end
+
   end
 
 

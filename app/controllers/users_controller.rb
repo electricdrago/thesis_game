@@ -6,24 +6,26 @@ class UsersController < ApplicationController
     @message = ""
     if @user = User.find_by(name: params[:name].downcase)
       if @user.authenticate(params[:password])
-        @message = "user already existed and had the correct password"
+        @message = "User already existed and had the correct password"
         log_in @user
-        @num = 2
+        redirect_to '/story'
       else
-        @message = "user already existed and password is wrong"
+        @message = "User already existed and password is wrong"
+        render 'main_pages/home'
       end
     else
       @user = User.new(name: params[:name], password: params[:password], password_confirmation: params[:password])
       if @user.save
-        @message = "user didnt exist and was created"
+        @message = "User didn't exist and was created"
         log_in @user
-        @num = 2
+        redirect_to '/story'
       else
-        @message = "user didnt existed and couldnt be created"
+        @message = "User did not exist but could not be created"
+        render 'main_pages/home'
       end
 
     end
-    render json: {message: @message, num: @num}
+
   end
 
   def destroy

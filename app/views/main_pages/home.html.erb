@@ -1,84 +1,82 @@
 <!-- Ordenar mejor para que se vea mejor, tendr un background y tal vez musiquita, adminMartin deveria enviarte
 a la pagina de admin -->
 <style>
+body {
+ background-image: url('assets/background_planet.jpg');
+ background-repeat: no-repeat;
+ background-attachment: fixed;
+ background-size: cover;
+}
+
 input[type=text], input[type=password] {
-  width: 30%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  width: 54vmin;
+  padding: .8vmin .7vmin;
+  margin: .7vmin 0;
   display: inline-block;
-  border: 4px solid black;
+  border: .7vmin solid black;
   box-sizing: border-box;
-  font-size: 30px
+  font-size: 3.2vmin;
+  border-radius: 2vmin
 }
 
 /* Set a style for all buttons */
-button {
+.button {
   background-color: #4CAF50;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  padding: .9vmin .2vmin;
+  margin: .2vmin 0;
   border: none;
   cursor: pointer;
-  width: 30%;
-  font-size: 40px
+  width: 54vmin;
+  font-size: 4vmin;
 }
 
 /* Add a hover effect for buttons */
-button:hover {
+.button:hover {
   opacity: 0.8;
 }
 
-/* Extra style for the cancel button (red) */
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
+.title {
+    margin-top: 2%;
+    margin-bottom: 3%;
+    position:relative;
+    color: blue;
+    font-size: 8vmin;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 0px 0px 0 rgb(-12,184,243),
+                 -1px -1px 0 rgb(-24,172,231),
+                 -2px -2px 0 rgb(-36,160,219),
+                 -3px -3px 0 rgb(-48,148,207),
+                 -4px -4px 0 rgb(-59,137,196),
+                 -5px -5px 0 rgb(-71,125,184),
+                 -6px -6px 0 rgb(-83,113,172),
+                 -7px -7px 0 rgb(-95,101,160),
+                 -8px -8px 0 rgb(-107,89,148),
+                 -9px -9px  0 rgb(-119,77,136),
+                 -10px -10px 9px rgba(0,0,0,0.77),
+                 -10px -10px 1px rgba(0,0,0,0.5),
+                 0px 0px 9px rgba(0,0,0,.2);
+
+}
+.h3 {
+  font-size: 5vmin;
+  font-weight: bold;
 }
 </style>
+<div style=" height:100%; width:100%; top:0; left:0; position:fixed; background: white; opacity:.38; z-index:-1"></div>
+<div style="margin:auto; text-align:center;">
+<h1 class="title">Civients</h1>
+<p style="font-size:5vmin">Put any name and password to start</p>
 
-<h1>Test version 1.0</h1>
-<h3>Put any name and password to start</h3>
+<% if @message%>
+  <p style="font-size:3vmin; color: red;"><%=@message%></p>
+<%end%>
+<form action="/sign_in">
+<p class="h3">Name:</p><input type="text" id="name" name = "name"><br>
+<p class="h3">Password:</p><input type="text" id="password" name="password"><br>
+<input type="hidden" name= "authenticity_token" value="<%=form_authenticity_token%>">
+<br>
+<input type="submit" value="Sign-In" class="button">
+</form>
 
-<h3>Name:</h3><input type="text" id="name"><br>
-<h3>Password:</h3><input type="text" id="password"><br>
-<button onclick= "signin()">sign in </button>
-
-
-<script>
-function signin(){
-  console.log($("#name")[0].value, $("#password")[0].value)
-
-  $.ajax({
-    url: "/sign_in",
-    data: {"name": Rails.$("#name")[0].value, "password": Rails.$("#password")[0].value, "authenticity_token": window._token},
-    type: "POST",
-    success: function(data){
-      console.log(data.message, data)
-      if (data.num == 2)
-      { window.location = '/activity_assignment'}
-    },
-    error: function (jqXHR, exception) {
-        var msg = '';
-        if (jqXHR.status === 0) {
-            msg = 'Not connect.\n Verify Network.';
-        } else if (jqXHR.status == 404) {
-            msg = 'Requested page not found. [404]';
-        } else if (jqXHR.status == 500) {
-            msg = 'Internal Server Error [500].';
-        } else if (exception === 'parsererror') {
-            msg = 'Requested JSON parse failed.';
-        } else if (exception === 'timeout') {
-            msg = 'Time out error.';
-        } else if (exception === 'abort') {
-            msg = 'Ajax request aborted.';
-        } else {
-            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-        }
-        $('#post').html(msg);
-        console.log(msg)
-    }
-  })
-
-}
-
-</script>
+</div>

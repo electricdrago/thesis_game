@@ -6,47 +6,67 @@
   }
   */
   .over {
-    border: 9px solid yellow !important;
+    border: 7px solid yellow !important;
   }
   .wrong {
-    border: 9px solid red !important;
+    border: 7px solid red !important;
   }
   button {
     background-color: lightseagreen;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
+    padding: 3% 5%;
+    margin: .5vw;
     border: none;
     cursor: pointer;
-    width: 30%;
-    font-size: 40px
+    font-size: 3.5vw
   }
   a {
     background-color: lightblue;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    width: 30%;
-    font-size: 40px
+    color: red;
+    margin: .4vw 0;
+    width: 20%;
+    font-size: 2.3vw;
+    text-align: center;
+    align-items: center;
+    position: fixed;
+    top: 1%;
+    right:3%;
   }
 
-  .background {
+  body {
    background-image: url('assets/space.jpg');
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-size: cover;
   }
+
+  .points {
+    background: white;
+    opacity: .5;
+    width: 18vw;
+    height: 7vw;
+    font-size: 3vw;
+    text-align: center;
+    align-items: center;
+    position: fixed;
+    top: 5vw;
+    right:3%;
+    pointer-events: none;
+
+  }
+  .dragged {
+    position: fixed !important;
+  }
 </style>
 
-<div class= "background">
-<h3 style="color:red">User: <%=current_user.name%> </h3>
 
 <div id="jobs" style="width:80%"></div>
 <div id="machines"></div>
-<div id="percentage">0%</div>
+
 <button type="button" onclick="endGame()">Next Game</button> <br> <br>
+<div id="percentage" class = "points">0% completed</div>
 <%= link_to 'logout', 'logout' %>
-</div>
+
 <script>
 
 
@@ -145,8 +165,22 @@ function addJob(id,activities){
     activity.setAttribute("class","activity")
     activity.setAttribute("ondragstart", "drag(event)")
     activity.setAttribute("ondragend", "defaultDrop(event)")
+    activity.setAttribute("ontouchstart", function (){
+
+        var event = document.createEvent('Event');
+        event.initEvent('ondragstart', true, true);
+        this.dispatchEvent(event)
+    })
+    activity.addEventListener("touchmove", function(ev){
+      console.log("hjg")
+      var tLoc = ev.targetTouches[0];
+      this.classList.add("dragged")
+      this.style.left = tLoc.pageX + 'px'
+      this.style.top = tLoc.pageY + 'px'
+      console.log(document.elementFromPoint(tLoc.pageX, tLoc.pageY))
+    })
     activity.setAttribute("style", "box-sizing: border-box; width: "+String(activities[j][0]/maxTime*100)+"%; "+
-        "height: 100%; float:left; background: "+ job_colors[id]+"; border: .7vw solid; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
+        "height: 100%; float:left; background: "+ job_colors[id]+"; border: solid; border-width: 7px .7vw; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
     var original_position = document.createElement("div")
     var img = document.createElement("img")
     img.setAttribute("src",aliens[activities[j][1]])
@@ -179,7 +213,7 @@ function createMachines(amount){
     var machine = document.createElement("div")
     machine.setAttribute("id", "machine"+String(j))
     machine.setAttribute("class", "machine")
-    machine.setAttribute("style", "height: 70px; width:80%; float:left; border: .7vw solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
+    machine.setAttribute("style", "height: 70px; width:80%; float:left; border: 7px solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
     machine.setAttribute("ondrop", "drop(event)")
     machine.setAttribute("ondragover", "allowDrop(event)")
     machine.setAttribute("ondragleave", "deClass(event)")
@@ -232,7 +266,7 @@ function move_activity(machine, position, activity, time_wasted, next_activity){
     }
   }
 
-  $('#percentage').html(slvr.get_done()*100)
+  $('#percentage').html(String(Math.floor(slvr.get_done()*100))+'% completed')
 
 }
 

@@ -45,6 +45,11 @@
         <% name = i.split('/').last %>
         <option value= <%= raw name%> > <%= raw name.split('_').last%> </option>
       <% end %>
+      <% images = Dir.glob("app/assets/images/scientist*.png")%>
+      <% images.each do |i|%>
+        <% name = i.split('/').last %>
+        <option value= <%= raw name%> > <%= raw name%> </option>
+      <% end %>
     </select>
     <p> position: </p>
     <select name="position" id="pos1">
@@ -57,8 +62,20 @@
 </div>
 <div id = "scenes">
   <div class = "1">
-    <p>picture: </p> <input type = "string" id = "back1">
+    <p>picture: </p> <select name="image" id="back1">
+      <% images = Dir.glob("app/assets/images/background*.png")%>
+      <% images.each do |i|%>
+        <% name = i.split('/').last %>
+        <option value= <%= raw name%> > <%= raw name%> </option>
+      <% end %>
+      <% images = Dir.glob("app/assets/images/*.jpg")%>
+      <% images.each do |i|%>
+        <% name = i.split('/').last %>
+        <option value= <%= raw name%> > <%= raw name%> </option>
+      <% end %>
+    </select>
     <p>frame</p> <input type = "number" id = "frame1" value=0>
+    <p>mini?</p> <input type = "checkbox" id = "tut1">
   </div>
   <div id = "ns"></div>
   <button type = "button" onclick="addScene()">add scenes</button>
@@ -86,6 +103,11 @@ function addDialog(){
       '<% name = i.split("/").last %>'+
       '<option value= <%= raw name%> > <%= raw name.split("_").last%> </option>'+
     '<% end %>'+
+    '<% images = Dir.glob("app/assets/images/scientist*.png")%>'+
+    '<% images.each do |i|%>'+
+      '<% name = i.split("/").last %>'+
+      '<option value= <%= raw name%> > <%= raw name%> </option>'+
+    '<% end %>'+
   '</select>'+
   '<p> position: </p>'+
   '<select name="position" id="pos'+String(dialogs)+'">'+
@@ -99,8 +121,20 @@ function addScene(){
   scenes +=1
   dia = document.createElement("div")
   dia.setAttribute("class", String(scenes))
-  dia.innerHTML = '<p>picture: </p> <input type = "string" id = "back'+String(scenes)+'">'+
-  '<p>frame</p> <input type = "number" id = "frame'+String(scenes)+'" value=0>'
+  dia.innerHTML = '<p>picture: </p> <select name="image" id="back'+String(scenes)+'">'+
+    <% images = Dir.glob("app/assets/images/background*.png")%>
+    <% images.each do |i|%>
+      <% name = i.split("/").last %>
+      '<option value= <%= raw name%> > <%= raw name%> </option>'+
+    <% end %>
+    <% images = Dir.glob("app/assets/images/*.jpg")%>
+    <% images.each do |i|%>
+      <% name = i.split("/").last %>
+      '<option value= <%= raw name%> > <%= raw name%> </option>'+
+    <% end %>
+  '</select>'+
+  '<p>frame</p> <input type = "number" id = "frame'+String(scenes)+'" value=0>'+
+  '<p>mini?</p> <input type = "checkbox" id = "tut'+String(scenes)+'">'
   d = document.getElementById("scenes")
   d.insertBefore(dia, document.getElementById("ns"))
 }
@@ -162,7 +196,8 @@ function post_story(){
   }
   for(var cont = 0; cont < scenes; cont++){
     sce.push([document.getElementById("back"+String(cont+1)).value,
-      parseInt(document.getElementById("frame"+String(cont+1)).value)])
+      parseInt(document.getElementById("frame"+String(cont+1)).value),
+      document.getElementById("tut"+String(cont+1)).checked])
   }
   unl = document.getElementById("unlock")
   for (cont = 1; cont < unl.children.length; cont+=2){
