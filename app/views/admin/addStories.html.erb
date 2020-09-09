@@ -1,0 +1,198 @@
+<script>
+
+stories = [
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "Greetings Dr !!user, as one of the greatest minds of these century, next to me of course, I'll put you in charge of my brand new invention", "scientist.png", "right"], [1, "I'm proud to present you the Civient (not tm'd)!!", "scientist.png", "right"], [2, "Civ", "nicubunu_Game_baddie_Basic_guy.png", "left"], [3, "This species has unsual abilities, for example its mind its connected with the others of his species", "scientist.png", "right"], [4, "The way this ability works is that any time a civient learns new information or gets a new ability, every other civient learns it too", "scientist.png", "right"], [5, "This ability could be used to do great evil!! AHAHA HAHA!!, :O I mean for great beagle, I love dogs", "scientist.png", "left"], [6, "Yeah a great ability nevertheless, only one has to go to the gym for everyone else, and I could maintain my six-pack while doing science all day, but enough about dreaming", "scientist.png", "right"], [7, "The reason we need you is to control a planet filled with civients, your work is to make them the most advanced civilization in the universe, for no evil reasons of course", "scientist.png", "right"], [8, "Your job will be to assign daily activities to the civients so they learn as much as possible", "scientist.png", "right"],
+    [9, "I'll let my right civient to explain the technicalities", "scientist.png", "right"],
+    [10, "Hello, I'm actually not a civient, but a 3D projection with an AI mind, the civients still don't know anything yet, you'll have an automatic translator to be able to understand their feelings so dont worry about communication", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [11, "I will sorround in a yellow frame the things I want to show you, so first here at the top you have the activities you have to distribute", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [12, "Below you have the civients that will work for you, these are the ones that will make the activities", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [13, "In order to assign the activities you must start with one of the leftmost activities, as the activities must be done in the order these appear if these are of the same color (inner)", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [14, "So first we will assign this activity to the civient that is able to do that activity", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [15, "Then we can assign the second activity of the same type, as you can see there is a line that reminds you after which activity this next activity must be done", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [16, "You'll see that this activity will be placed after the first one has finished, even if the civient was free before", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [17, "now we added a lot more activities, as you can see other activities can be done before or after the activities that where already placed", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [18, "If you want to place an activity between two already placed activities, just put it over an activity and that activity will be done before the activity it was placed over", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [19, "As you can see it was placed between the activities, just remember, if you move one of the activities you might move the rest of the activities that depended on the moved activity", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [20, "If we had placed that activity before the green activity, the rest of the green activities would also move and the time will be over", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [21, "You should also know that in order to gain some points you must at least complete 85% of the problem, but if you are able to do it all youll get more points", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [22, "Don't worry if you are not able to do all of these puzzles, some are actually difficult, but now you could ask, why would I want points?", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [23, "Here is the shop, here you will be able to improve your civient's world in many different characteristics", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [24, "every three sets you buy from an specific skill you'll see something new happening to your world, so I'll recommend you to buy things three by three", "nicubunu_Game_baddie_Geisha.png", "left"],
+    [25, "I guess thats all you need to know, so lets get started !!", "nicubunu_Game_baddie_Geisha.png", "left"]],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 10,true],
+    ["background_tutorial_activities_sel.png", 11,true],
+    ["background_tutorial_machine_sel.png", 12,true],
+    ["background_tutorial_first_activities.png", 13,true],
+    ["background_tutorial_first_move.png", 14,true],
+    ["background_tutorial_second_act2.png", 15,true],
+    ["background_tutorial_second_act.png", 16,true],
+    ["background_tutorial_70_percent.png", 17,true],
+    ["background_tutorial_between2.png", 18,true],
+    ["background_tutorial_between_placed.png", 19,true],
+    ["background_tutorial_completed.png", 22,true],
+    ["background_tutorial_shop.png", 23,true],
+    ["background_tutorial_shop_example.png", 24,true]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [0,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "Nothing seems to be happening yet, keep it going", "nicubunu_Game_baddie_Basic_guy.png", "right"]],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_space.jpg", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [0,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "So some strange dudes just appeared", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "With my honor I'll defend my kingdom, my people from all those horrible monsters that appeared", "nicubunu_Game_baddie_Warrior.png", "left"],
+    [0, "Don't worry no monsters here, they just destroy some rocks that rolled down the mountain, very usefull though as we use those rocks for construcction", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "I'll fight to become stronger , I'll become stronger to be able to fight, Hoosaa", "nicubunu_Game_baddie_Warrior.png", "left"],
+    [0, "yeah, they are kind of poetic as they want to impress women, still their strengths is actually impressive", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "Never fear as I am here", "nicubunu_Game_baddie_Warrior.png", "left"]],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [30,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "Discipline was added to the stronger civients, as we notice that the strongest is not the one that practiced 1,000 kicks but the ones that practiced the same kick a 1,000 times, or thats what some bruise giving Julie said", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "I'll fight for my masters and protect the at all cost", "nicubunu_Game_baddie_Ninja.png", "left"],
+    [0, "We tought them since birth to be completely obedient, as we do not want them to do what they want or abuse thir superior power", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "Hmm, my head is having thoughts, it is thinking why not be my own master", "nicubunu_Game_baddie_Ninja.png", "left"],
+    [0, "We also invented something called honor, which justifies obedience on a higher duty hanged on pride", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "My head should be ashamed of such toughts, I'll never betray my masters, I'll do 10,000 push-ups as punishments", "nicubunu_Game_baddie_Ninja.png", "left"],
+    [0, "Who knows how can something do push-ups without legs, but it works", "nicubunu_Game_baddie_Basic_guy.png", "right"]],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [60,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "Strong ones where trained with strategic thinking and order", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "Sir, yes sir", "nicubunu_Game_baddie_Camouflage.png", "left"],
+    [0, "These are the civients that fight for their family and their people, they are heroes", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "My duty is to protect from evil", "nicubunu_Game_baddie_Camouflage.png", "left"],
+    [0, "We might have kind of emm, not necesarily tricking but rather help them to get a hero complex with some entertainers help", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+
+    [0, "But in our defense we do need them, as they help in case of catastrophes, and mhmm little riots that dont really happen", "nicubunu_Game_baddie_Basic_guy.png", "right"]],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [90,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[1, "Couldn't we make things better by changing some of our traditions?, wouldn't it be more effective?", "nicubunu_Game_baddie_Devil.png", "left"],
+    [0, "hmm, yes we could, you are right,some things might be more effective, boring though but effective", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "But we could make others work a little more, they could no say no as it is to help others", "nicubunu_Game_baddie_Devil.png", "left"],
+    [0, "I guess not, but they have the right to be free", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "Why, doesn't freedom comes from power?, can you even be free if you cannot fight to be?, isn't living a fight?", "nicubunu_Game_baddie_Devil.png", "left"],
+    [0, "I.. I don't know", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "And why are we following orders from that clown?, can't we do better by ourselves, aren't we able to think on our own?", "nicubunu_Game_baddie_Devil.png", "left"],
+    [0, "!!user has been very helpful, and the orders had helped a lot in this planet", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "How about if I tell you a secret, come with me later, bye", "nicubunu_Game_baddie_Devil.png", "left"],
+    [0, "Dont worry !!user, I don't think I'll go, I trust you are good for us", "nicubunu_Game_baddie_Basic_guy.png", "right"]
+  ],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [0,0,30,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "", "nicubunu_Game_baddie_Billy.png", "left"],
+  ],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [200,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[1, "", "nicubunu_Game_baddie_Candy.png", "left"],
+    [0, "", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "", "nicubunu_Game_baddie_Candy.png", "left"],
+    [0, "", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "", "nicubunu_Game_baddie_Candy.png", "left"],
+    [0, "", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "", "nicubunu_Game_baddie_Candy.png", "left"],
+    [0, "", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "", "nicubunu_Game_baddie_Candy.png", "left"]],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [200,0,0,0,0]
+  },
+  {
+    //order, dialog, character, side
+    "dialogs": [[0, "So some starnge dudes just appeared", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+    [1, "hi", "nicubunu_Game_baddie_.png", "left"],],
+    //background, frame, tutorial? (small frame)
+    "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+    //strength, intelligence, curiosity, organization, construction
+    "levels": [200,0,0,0,0]
+  }
+
+]
+var j
+for(j=0; j<stories.length; j++){
+  var button = document.createElement("button")
+  button.setAttribute("type","button")
+  button.setAttribute("onclick","sendStoriesFrom("+j+")")
+  button.innerHTML = j
+  document.body.append(button)
+}
+
+function getErrorMsg(jqXHR, exception) {
+var msg = '';
+if (jqXHR.status === 0) {
+    msg = 'Not connect.\n Verify Network.';
+} else if (jqXHR.status == 404) {
+    msg = 'Requested page not found. [404]';
+} else if (jqXHR.status == 500) {
+    msg = 'Internal Server Error [500].';
+} else if (exception === 'parsererror') {
+    msg = 'Requested JSON parse failed.';
+} else if (exception === 'timeout') {
+    msg = 'Time out error.';
+} else if (exception === 'abort') {
+    msg = 'Ajax request aborted.';
+} else {
+    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+}
+return msg
+}
+
+
+function sendStoriesFrom(c){
+  if(c<stories.length){
+    var data = stories[c]
+    data.authenticity_token= window._token
+
+    $.ajax({
+      url: "/upload_story",
+      data: data,
+      type: "POST",
+      success: function(response){
+        console.log("added", c)
+        console.log(response)
+        sendStoriesFrom(c+1)
+      },
+      error: function(jqXHR, exception){
+        msg = getErrorMsg(jqXHR, exception)
+        var response = {message: msg}
+        console.log(response)
+        console.log("could not add ", c)
+      }
+    })
+  }
+}
+</script>

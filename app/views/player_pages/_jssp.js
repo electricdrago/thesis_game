@@ -66,7 +66,7 @@ class machine {
     if(activity.earliest_time()>=0){
       if(activity.machine_type != this.type){
         move_not_possible("This activity cannot be done here");
-        return
+        return false
       }
       position-=1;
       var changed_activities = []
@@ -100,10 +100,18 @@ class machine {
           }
 
           activity.update_status(-1,-1)
-          this.JSS.fillTree(new treeNode(activity,activity.activities.id.toString()+", "+activity.id.toString()), changed_activities)
+          var a = this.JSS.fillTree(new treeNode(activity,activity.activities.id.toString()+", "+activity.id.toString()), changed_activities)
+          if(a){
+            activity.admit_status()
+            return true
+          }else {
+            activity.undo()
+            return false
+          }
 
         } else {
           move_not_possible("This activity cannot be placed here");
+          return false
         }
 
       } else {
@@ -123,12 +131,22 @@ class machine {
         }
 
         if (changed_activities.length > 0){
-          activity = changed_activities[0]
-          this.JSS.fillTree(new treeNode(activity,activity.activities.id.toString()+", "+activity.id.toString()))
+          var oractivity = changed_activities[0]
+          var a = this.JSS.fillTree(new treeNode(oractivity,oractivity.activities.id.toString()+", "+oractivity.id.toString()))
+          if(a){
+            activity.admit_status()
+            return true
+          }else {
+            activity.undo()
+            return false
+          }
         }
+        activity.admit_status()
+        return true
       }
     } else {
       move_not_possible("This activity cannot be placed yet");
+      return false
     }
   }
 
@@ -209,6 +227,26 @@ class machine {
     }
     return unused_time
   }
+
+  force_remove(act, position){
+    if (this.machine[position]==act){
+      this.machine.splice(position,1)
+      var i
+      for(i = position; i< this.machine.length; i++){
+        this.machine[i].position = i;
+      }
+    }
+  }
+  force_add(act, position){
+    if (this.machine[position]!=act){
+      this.machine.splice(position, 0, activity)
+      var i
+      for(i = position; i< this.machine.length; i++){
+        this.machine[i].position = i;
+      }
+    }
+  }
+
 }
 
 class activity {
@@ -228,7 +266,36 @@ class activity {
     this.JSS = jss
     this.activity_id = activity_id
     activities_map[activity_id] = this
+    this.prev_starting_time = -1
+    this.prev_end_time = -1
+    this.prev_machine = -1
+    this.prev_position = -1
 
+  }
+
+  admit_status(){
+    this.prev_starting_time = this.starting_time
+    this.prev_end_time = this.end_time
+    this.prev_machine = this.machine
+    this.prev_position = this.position
+  }
+
+  undo(){
+    if(this.position!=this.prev_position || this.machine!=this.prev_machine){
+      if (this.machine>=0){
+        this.JSS.machines[this.machine].force_remove(this,this.position)
+      }
+      if (this.prev_machine>=0){
+        this.JSS.machines[this.prev_machine].force_add(this,this.position)
+      }
+    }
+    this.position = this.prev_position
+    this.changeMachine(this.prev_machine)
+    this.update_status(this.prev_starting_time, this.prev_end_time)
+  }
+
+  getPrev(){
+    return this.activities.getPrev(this.id)
   }
 
   earliest_time(){
@@ -289,9 +356,12 @@ class activity {
       }
       this.changeMachine(-1)
       this.update_status(-1,-1)
+      this.admit_status()
+      return true
 
     } else {
       move_not_possible("For removing this activity you need to remove another activity");
+      return false
     }
   }
 
@@ -318,6 +388,13 @@ class activities{
     this.JSS = jss
     this.next_id = 0
 
+  }
+
+  getPrev(id){
+    if (id>0){
+    return this.activities[id-1].activity_id
+    }
+    return -1
   }
 
   get_earliest_time (id){
@@ -434,7 +511,7 @@ class JSSProblem {
         this.seen_activities.clear()
         this.pendant_activities.splice(0, this.pendant_activities.length)
         move_not_possible("Activity cannot be placed here as there is a dependancy that could not be solved");
-        return
+        return false
       }
       o_a.was_changed=true
       toChange.push(o_a)
@@ -452,7 +529,7 @@ class JSSProblem {
           this.seen_activities.clear()
           this.pendant_activities.splice(0, this.pendant_activities.length)
           move_not_possible("Activity cannot be placed here as there is a dependancy that could not be solved");
-          return
+          return false
         }
         tempNodes.push(o_a)
       }
@@ -474,6 +551,7 @@ class JSSProblem {
 
     toChange.splice(0, toChange.length)
     this.seen_activities.clear()
+    return true
   }
 
   readSource(source){
@@ -530,9 +608,9 @@ class solver {
 
   do_step(activity, machine, position){
     if (machine == -1){
-      activity.remove_from_machines()
+      return activity.remove_from_machines()
     } else {
-      this.jssp.machines[machine].addActivity(activity, position)
+      return this.jssp.machines[machine].addActivity(activity, position)
     }
   }
 

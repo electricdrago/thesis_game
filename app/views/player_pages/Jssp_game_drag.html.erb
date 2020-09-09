@@ -64,7 +64,7 @@
   }
 </style>
 <svg id ="svg" style="position:absolute; top:0; left:0; z-index:-1">
-  <line x1="0" y1="0" x2="0" y2="0" stroke = "red" id = "line" style = "stroke-width:6; stroke-dasharray: 20 10 5 5 5 10; z-index:990"/>
+  <line x1="0" y1="0" x2="0" y2="0" stroke = "red" id = "line"/>
 </svg>
 
 <div id="jobs" style="width:80%"></div>
@@ -96,171 +96,8 @@ window.onresize= resizeSvg;
 function lineFollowMouse(ev){
   var line = document.getElementById("line")
   line.x2.baseVal.value = ev.pageX
-
   line.y2.baseVal.value = ev.pageY
-
-}
-
-function prepareDrag(e){
-  //create drag copy
-  dc = e.target
-  var prev = document.createElement("div")
-
-  prev.setAttribute("id", "prev"+dc.id)
-  prev.setAttribute("style", "width:0 ;float:left;")
-  dc.parentNode.insertBefore(prev, dc)
-  document.body.append(dc)
-  dc.style.float = "none"
-  dc.style.height = "70px"
-
-  w = dc.style.width
-  dc.style.width = String(parseFloat(w.substring(0,w.length-1))*.8)+"%"
-  dc.style.position = "absolute"
-
-  dc.style.zIndex = "1000"
-  svg = document.getElementById("svg")
-  svg.style.zIndex = "80"
-  toPos(dc, e.pageY-dc.offsetHeight/2, e.pageX) //-dc.offsetWidth/2
-  var currTarget = null
-  function moveDrag(event){
-    e = event
-    toPos(dc, e.pageY-dc.offsetHeight/2, e.pageX)
-    svg = document.getElementById("svg")
-    svg.style.zIndex = "-1"
-    var target = getTarget(e)
-    svg.style.zIndex = "80"
-    if (currTarget != target){
-      if(currTarget){
-        currTarget.classList.remove("selected", "wrong", "over")
-      }
-      currTarget = target
-      if(currTarget){
-        currTarget.classList.add("over")
-      }
-    }
-
-  }
-
-  function getTarget(e){
-    dc.hidden  = true
-    var below = document.elementFromPoint(e.clientX,e.clientY)
-    dc.hidden = false
-    if (!below){
-      return
-    }
-    var target = below.closest('.droppable')
-    return target
-  }
-  var base = getPrevAct(dc.id)
-  if (base>=0){
-    var prevAct = document.getElementById("activity"+String(base))
-    prevAct.classList.add("prev")
-    var line = document.getElementById("line")
-
-    line.y1.baseVal.value = prevAct.offsetTop  + 35
-    var w = prevAct.style.width
-    var y = document.body.offsetWidth
-
-    line.x1.baseVal.value = prevAct.offsetLeft+y* parseFloat(w.substring(0,w.length-1))*.01*.8
-    document.addEventListener("mousemove", lineFollowMouse, true)
-  }
-  document.addEventListener("mousemove",moveDrag)
-  //document.addEventListener("touchmove", moveDrag)
-
-  function dropIt(){
-
-    document.removeEventListener("mousemove",moveDrag)
-    var line = document.getElementById("line")
-    svg = document.getElementById("svg")
-    svg.style.zIndex = "-1"
-    document.removeEventListener("mousemove", lineFollowMouse, true)
-    line.x1.baseVal.value = 0
-    line.y1.baseVal.value = 0
-    line.x2.baseVal.value = 0
-    line.y2.baseVal.value = 0
-    //document.removeEventListener("touchmove",moveDrag)
-    dc.style.float = "left"
-    dc.style.height = "100%"
-
-    dc.onclick =  prepareDrag
-    //dc.ontouchstart = prepareDrag
-    //dc.setAttribute("onclick", "prepareDrag(event)")
-    w = dc.style.width
-    dc.style.width = String(parseFloat(w.substring(0,w.length-1))*1.25)+"%"
-    dc.style.position = ""
-    dc.style.zIndex = ""
-    var target = getTarget(e)
-    if (target){
-      if(currTarget){
-        currTarget.classList.remove("selected", "wrong", "over")
-      }
-      currTarget = target
-      if(currTarget){
-        currTarget.classList.remove("selected", "wrong", "over")
-      }
-    }
-    dropEffect(dc, target)
-  }
-  dc.onclick = dropIt
-  dc.ontouchend = dropIt
-  dc.ontouchcancel = dropIt
-  console.log(dc)
-  console.log(dc.onclick, dc.ontouchend, dc.ontouchcancel)
-
-}
-
-function toPos(element, top, left){
-  element.style.top = String(top)+'px'
-  element.style.left = String(left)+'px'
-}
-
-function dropEffect(element, target){
-
-  //You will have to create an element called prev position-
-  //this will be the last position your target wasChange
-  //this will get there in case of error
-  //check error to see how can you ad the elemet.onclick= null
-  //without adding it in case of error
-
-  element.classList.remove("selected", "wrong", "over")
-  data = element.id
-  var done
-  if (target){
-    if (target.classList.contains("machine")){
-
-      done = transform_movement(target.id, data, -1)
-    } else if (target.classList.contains("hidden_space")){
-
-      done = transform_movement(target.parentNode.id, data, target.id.substr(6))
-    } else if (target.classList.contains("activity")){
-
-      hidden_back = document.getElementById("hidden"+target.id)
-      if(hidden_back){
-
-        done = transform_movement(target.parentNode.id, data, target.id)
-      }
-    }
-    if(done){
-      element.onclick= ""
-      element.ontouchstart = ""
-      element.ontouchend = ""
-      element.ontouchcancel = ""
-    }
-  }
-  else {
-    var position = document.getElementById("original"+element.id)
-    if(position){
-      done = transform_movement(-1, element.id, -1)
-    }
-  }
-  var prev = document.getElementById("prev"+data)
-  if (prev){
-    if(!done){
-        prev.parentNode.insertBefore(element, prev)
-    }
-  prev.parentNode.removeChild(prev)
-  }
-
+  console.log(line, ev.pageX, ev.pageY)
 }
 
 <%= render "jssp.js"%>
@@ -280,8 +117,99 @@ var aliens =["assets/nicubunu_Game_baddie_Alien.png", "assets/nicubunu_Game_badd
 <% @machine_type.each_char { |c|%>
   machine_type+=<%=c%>
 <%}%>
+function drag(ev){
+  ev.dataTransfer.setData("text", ev.target.id)
+  ev.target.classList.add("selected")
+  console.log(ev)
+  var base = getPrevAct(ev.target.id)
+  if (base>=0){
+    var prevAct = document.getElementById("activity"+String(base))
+    prevAct.classList.add("prev")
+    var line = document.getElementById("line")
+    line.y1.baseVal.value = prevAct.offsetTop
+    line.x1.baseVal.value = prevAct.offsetLeft
+    console.log(prevAct, line)
+    //svg = document.getElementById("svg")
+    //svg.addEventListener("dragover", lineFollowMouse, true)
 
+    //document.addEventListener("mousemove", lineFollowMouse, true)
+    //ev.target.setAttribute("ondrag", "lineFollowMouse(event)")
+    ev.target.addEventListener("drag", function(){
+      //console.log(this)
+      var line = document.getElementById("line")
+      line.x2.baseVal.value = this.offsetLeft
+      line.y2.baseVal.value = this.offsetTop
+      console.log(line, this.offsetLeft, this.offsetTop, this)
+    })
+  }
 
+}
+function allowDrop(ev){
+  ev.preventDefault()
+  ev.target.classList.add("over")
+}
+
+function drop(ev){
+  ev.preventDefault()
+  var data = ev.dataTransfer.getData("text")
+
+  var act = document.getElementById(data)
+  var hidden_space = document.getElementById("hidden"+data)
+  if (!hidden_space){
+    hidden_space = document.createElement("div")
+    hidden_space.setAttribute("id","hidden"+data)
+    hidden_space.setAttribute("class","hidden_space")
+    hidden_space.setAttribute("style", "height: 100%; width: 1%;float:left;")
+  }
+  ev.target.classList.remove("selected", "wrong", "over")
+  if (ev.target.classList.contains("machine")){
+
+    //ev.target.appendChild(act)
+    //ev.target.insertBefore(hidden_space,act)
+    transform_movement(ev.target.id, data, -1)
+  } else if (ev.target.classList.contains("hidden_space")){
+    //ev.target.parentNode.insertBefore(act, ev.target)
+    //ev.target.parentNode.insertBefore(hidden_space,act)
+    transform_movement(ev.target.parentNode.id, data, ev.target.id.substr(6))
+  } else if (ev.target.classList.contains("activity")){
+    hidden_back = document.getElementById("hidden"+ev.target.id)
+    if(hidden_back){
+      //ev.target.parentNode.insertBefore(act, hidden_back)
+      //ev.target.parentNode.insertBefore(hidden_space,act)
+      transform_movement(ev.target.parentNode.id, data, ev.target.id)
+    }
+  } else {
+    ev.preventDefault()
+  }
+
+}
+
+function deClass(ev){
+  ev.target.classList.remove("selected", "wrong", "over")
+}
+
+function defaultDrop(ev){
+  console.log(ev)
+  var line = document.getElementById("line")
+  line.x1.baseVal.value = 0
+  line.y1.baseVal.value = 0
+  line.x2.baseVal.value = 0
+  line.y2.baseVal.value = 0
+  svg = document.getElementById("svg")
+  svg.removeEventListener("dragover", lineFollowMouse, true)
+  ev.target.classList.remove("selected", "wrong", "over")
+  if ("none" == ev.dataTransfer.dropEffect){
+    var position = document.getElementById("original"+ev.target.id)
+    if(position){
+      //position.parentNode.insertBefore(ev.target, position)
+      var hidden_space = document.getElementById("hidden"+ev.target.id)
+      if(hidden_space){
+        //hidden_space.parentNode.removeChild(hidden_space)
+      }
+      transform_movement(-1, ev.target.id, -1)
+    }
+  }
+}
 
 function addJob(id,activities){
   //Job will have the size of each activity and its id
@@ -296,9 +224,25 @@ function addJob(id,activities){
   for (j=0; j<activities.length; j++){
     var activity = document.createElement("div")
     activity.setAttribute("id", "activity"+String(activities[j][2]))
+    activity.setAttribute("draggable", "true")
     activity.setAttribute("class","activity")
-    activity.setAttribute("onclick", "prepareDrag(event)")
-    activity.setAttribute("ontouchstart", "prepareDrag(event)")
+    activity.setAttribute("ondragstart", "drag(event)")
+    activity.setAttribute("ondragend", "defaultDrop(event)")
+    //activity.setAttribute("ondrag", "lineFollowMouse(event)")
+    activity.setAttribute("ontouchstart", function (){
+
+        var event = document.createEvent('Event');
+        event.initEvent('ondragstart', true, true);
+        this.dispatchEvent(event)
+    })
+    activity.addEventListener("touchmove", function(ev){
+      console.log("hjg")
+      var tLoc = ev.targetTouches[0];
+      this.classList.add("dragged")
+      this.style.left = tLoc.pageX + 'px'
+      this.style.top = tLoc.pageY + 'px'
+      console.log(document.elementFromPoint(tLoc.pageX, tLoc.pageY))
+    })
     activity.setAttribute("style", "box-sizing: border-box; width: "+String(activities[j][0]/maxTime*100)+"%; "+
         "height: 100%; float:left; background: "+ job_colors[id]+"; border: solid; border-width: 7px .7vw; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
     var original_position = document.createElement("div")
@@ -334,7 +278,9 @@ function createMachines(amount){
     machine.setAttribute("id", "machine"+String(j))
     machine.setAttribute("class", "machine")
     machine.setAttribute("style", "height: 70px; width:80%; float:left; border: 7px solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
-    machine.classList.add("droppable")
+    machine.setAttribute("ondrop", "drop(event)")
+    machine.setAttribute("ondragover", "allowDrop(event)")
+    machine.setAttribute("ondragleave", "deClass(event)")
     var machines = document.getElementById("machines")
     tempDiv.appendChild(img)
     tempDiv.appendChild(machine)
@@ -362,9 +308,7 @@ function move_activity(machine, position, activity, time_wasted, next_activity){
     }
   }else {
     var act = document.getElementById("activity"+activity)
-    act.onclick= ""
-    act.ontouchstart = ""
-    act.classList.add("droppable")
+    act.setAttribute("draggable", "false")
     var hidden_space = document.getElementById("hiddenactivity"+activity)
     var mach = document.getElementById("machine"+String(machine))
     if (!hidden_space){
@@ -372,7 +316,6 @@ function move_activity(machine, position, activity, time_wasted, next_activity){
       hidden_space.setAttribute("id","hiddenactivity"+activity)
       hidden_space.setAttribute("class","hidden_space")
       hidden_space.setAttribute("style", "height: 100%; width: 1%;float:left;")
-      hidden_space.classList.add("droppable")
     }
     hidden_space.style.width = String(time_wasted/maxTime*100)+"%"
     if(position <0 || next_activity<0){
@@ -446,17 +389,16 @@ function transform_movement(machine, activity, next_activity){
       position = activities_map[next_activity].position+1
     }
   }
-  return move(activity,machine, position)
+  move(activity,machine, position)
 }
 
 function move(activity, machine, position){
   //compute movement
 
-  var c =slvr.do_step(activities_map[activity], machine, position)
+  slvr.do_step(activities_map[activity], machine, position)
 
   sendDataMovement(activity, machine, position)
   step +=1
-  return c
 }
 
 function getPrevAct(activity){

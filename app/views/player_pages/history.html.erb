@@ -49,8 +49,9 @@
   img.right{
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
-    position:absolute;
-    right:0%;
+    position:relative;
+    float:right !important;
+    right: 60px
   }
   body {
    background-image: url('assets/lab.jpg');
@@ -59,13 +60,29 @@
    background-size: cover;
   }
 
+  #char {
+    position: relative;
+    animation-name: move;
+    animation-duration: 1.7s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+
+  }
+  @keyframes move {
+    0% {left: 0px; top:30px}
+    50% {left: 30px; top:0px}
+    100% {left: 60px; top:30px}
+  }
+
 
 </style>
 
 <div id= "box" class= "dialog-box d-right"><p id="dialog">Yes you can start by doing blas</p><p id="next-but">click anywhere</p></div>
 <br>
+
 <img class = "right" src="pic_trulli.jpg" alt="Character" style="max-height: 53vw; max-width: 45%; float:left;" id="char">
 <div style = "height:33vw; width: 47%; float: left;"><img src="assets/background_tutorial_begin.png" style="height:100%; width:100%" id="tutorial" alt="tutorial"></div></div>
+
 <%
 #@dialogs = [["hey", "image", "d-left"],["what?", "image", "d-right"], ["hello :P", "image", "d-left"], ["hey", "image", "d-right"],["what?", "image", "d-left"],
 #["hello :P", "image", "d-right"]]
@@ -93,7 +110,8 @@ function next_dialog(){
     //dialog.innerHTML = "este es un texto muuuuuuuuuy laaaaaaaaargo o supuestamente lo mazimo que deberia de hablar alguien para probar como se vees"
     image.src = "assets/"+dialogs[moment][1]
     image.className = dialogs[moment][2]
-    if (scene<scenes.length && scenes[scene][0]>=moment){
+    
+    if (scene<scenes.length && scenes[scene][0]<=moment){
 
       if(scenes[scene][2]){
 

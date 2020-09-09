@@ -28,15 +28,15 @@ class AdminController < ApplicationController
   def save_story
     @message = ""
     levels=params[:levels]
-
-    @story = Story.new(strength: levels[0].to_i, intelligence: levels[1].to_i)
+    #strength, intelligence, curiosity, organization, construction
+    @story = Story.new(strength: levels[0].to_i, intelligence: levels[1].to_i, curiosity: levels[2].to_i, organization: levels[3].to_i, construction: levels[4].to_i)
     if @story.save
       @message+='success'
     else
       @message+='failed'
     end
     params[:dialogs].each{ |k,i|
-      @dialog = Dialog.new(storyId: @story.id, order: k.to_i, dialog: i[0], character: i[1], side: i[2])
+      @dialog = Dialog.new(storyId: @story.id, order: k.to_i, dialog: i[1], character: i[2], side: i[3])
       if @dialog.save
         @message+='success'
       else
@@ -63,9 +63,10 @@ class AdminController < ApplicationController
     @num=0
     #p params
     #p "kjhkjhkjhkjh\n khkjhkjkjkjhkj"
-
+    @answer = GamesPlayed.new()
+    @answer.save
     maxLevel=Jssp.count("level = "+params[:level].to_s)
-    @JSSP = Jssp.new(number_machines: params[:number_machines], time_limit: params[:time_limit], diff_machines:true, machines: params[:machines], level: params[:level], number: maxLevel)
+    @JSSP = Jssp.new(number_machines: params[:number_machines], time_limit: params[:time_limit], diff_machines:true, machines: params[:machines], level: params[:level], number: maxLevel, answer:@answer.id)
     if @JSSP.save
       @message += "JSSP created "
       job_id = 0
@@ -83,6 +84,10 @@ class AdminController < ApplicationController
           activity_position+=1
         }
         job_id+=1
+      }
+      params[:answer].each{ |k, i|
+        @step = Step.new(idGame: @answer.id, number_step: i[0], idActivity: i[1], number_machine: i[2], position: i[3])
+        @step.save
       }
 
     else

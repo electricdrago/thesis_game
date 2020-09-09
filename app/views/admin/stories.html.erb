@@ -1,0 +1,26 @@
+<% stories = Story.all
+@stories = []
+stories.each do |i|
+  dialogs = Dialog.where(storyId:i.id)
+  scenes = Scene.where(storyId:i.id)
+  dia = []
+  sce= []
+  dialogs.each do |k|
+    dia.push([k.order, k.dialog, k.character, k.side])
+
+  end
+  scenes.each do |j|
+    sce.push([j.background, j.frame, j.tutorial])
+
+  end
+
+  @stories.push([i.curiosity, dia ,sce])
+end
+%>
+<p><%= @stories%></p>
+[
+[0, [[0, "hi", "nicubunu_Game_baddie_Alien.png", "left"], [1, "oh hi", "ii", "right"], [2, "where are you", "nicubunu_Game_baddie_Alien.png", "left"], [3, "here", "nicubunu_Game_baddie_Alien.png", "right"]], [["kj", 0, false]]],
+[0, [[0, "jhjh", "nicubunu_Game_baddie_Pirate.png", "left"], [1, "ouio", "nicubunu_Game_baddie_Camouflage.png", "right"], [2, "kuhoi", "nicubunu_Game_baddie_Dandy.png", "left"]], [["", 0, false]]], [0, [[0, "!!useris !!user lala", "nicubunu_Game_baddie_Camouflage.png", "right"], [1, "oh no!", "scientist.png", "left"]], [["background_tutorial_begin", 0, false], ["background_tutorial_first_move.png", 1, false]]],
+[0, [[0, "!!useris !!user lala", "nicubunu_Game_baddie_Camouflage.png", "right"], [1, "oh no!", "scientist.png", "left"]], [["background_tutorial_begin", 0, true], ["background_tutorial_first_move.png", 1, false]]],
+[0, [[0, "Greetings Dr !!user, as one of the greatest minds of these century, next to me of course, I'll put you in charge of my brand new invention", "scientist.png", "right"], [1, "I'm proud to present you the Civien (not tm'd)!!", "scientist.png", "right"], [2, "Civ", "nicubunu_Game_baddie_Basic_guy.png", "left"], [3, "This species has unsual abilities, for example its mind its connected with the others of his species", "scientist.png", "right"], [4, "The way this ability works is that any time a civien learns new information or gets a new ability, every other civien learns it too", "scientist.png", "right"], [5, "This ability could be used to do great evil!! AHAHA HAHA!!, :O I mean for great beagle, I love dogs", "scientist.png", "left"], [6, "Yeah a great ability nevertheless, only one has to go to the gym for everyone else, and I could maintain my six-pack while doing science all day, but enough about dreaming", "scientist.png", "right"], [7, "The reason we need you is to control a planet filled with civiens, your work is to make them the most advanced civilization in the universe, for no evil reasons of course", "scientist.png", "right"], [8, "Your job will be to assign daily activities to the civiens so they learn as much as possible", "scientist.png", "right"], [9, "I'll let my right civien to explain the technicalities", "scientist.png", "right"], [10, "Hello, I'm actually not a civient, but a 3D projection with an AI mind, the civients still don't know anything yet, you'll have an automatic translator to be able to understand their feelings so dont worry about communication", "nicubunu_Game_baddie_Geisha.png", "left"], [11, "I will sorround in a yellow frame the things I want to show you, so first here at the top you have the activities you have to distribute", "nicubunu_Game_baddie_Geisha.png", "left"], [12, "Below you have the civients that will work for you", "nicubunu_Game_baddie_Geisha.png", "left"], [13, "", "nicubunu_Game_baddie_Camouflage.png", "left"]], [["background_lab.jpg", 0, false], ["background_tutorial_begin", 0, false]]]
+]

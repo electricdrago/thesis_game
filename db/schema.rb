@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_08_205522) do
+ActiveRecord::Schema.define(version: 2020_09_06_210118) do
 
   create_table "dialogs", force: :cascade do |t|
     t.integer "storyId"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2020_08_08_205522) do
     t.string "machines"
     t.integer "level", default: 0
     t.integer "number", default: 0
+    t.integer "answer"
   end
 
   create_table "scenes", force: :cascade do |t|

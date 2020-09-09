@@ -164,8 +164,8 @@ class PlayerPagesController < ApplicationController
         break
       end
     end
-    #@story ||= Story.find(2)
-    @story ||= Story.first
+    @story ||= Story.find(2)
+    #@story ||= Story.first
     #@story = Story.find(2)
     dialogs = Dialog.where(storyId: @story.id).order(:order)
     @dialogs = []

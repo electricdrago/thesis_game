@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   post 'add_points' => 'player_pages#addPoints'
 
   get 'jssp_info/:id' => 'admin#jssp_info'
+  get 'stories' => 'admin#stories'
+  get 'addstories' => 'admin#addStories'
+  get 'addjssps' => 'admin#add_jssps'
 
   get 'prepare' => "admin#makeData"
   get 'download' => "admin#getData"

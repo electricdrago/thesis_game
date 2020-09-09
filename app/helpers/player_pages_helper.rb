@@ -16,6 +16,7 @@ module PlayerPagesHelper
   def player_getNewGame
     points = current_user.points
     if points < 50
+      #p "level2"
       jssp = Jssp.find_by(level: 1, number: current_user.last_beginner+1)
       current_user.last_beginner+=1
       if !jssp
@@ -23,14 +24,17 @@ module PlayerPagesHelper
         jssp = Jssp.find_by(level: 1, number: 0)
       end
     elsif points < 100
-      jssp = Jssp.find_by(level: 1, number: current_user.last_intermidiate+1)
+      #p "level2"
+      jssp = Jssp.find_by(level: 2, number: current_user.last_intermidiate+1)
       current_user.last_intermidiate+=1
       if !jssp
         current_user.last_intermidiate=0
         jssp = Jssp.find_by(level: 1, number: 0)
       end
     else
-      jssp = Jssp.find_by(level: 2, number: current_user.last_advanced+1)
+      #p "level3"
+      #p points
+      jssp = Jssp.find_by(level: 3, number: current_user.last_advanced+1)
       current_user.last_advanced+=1
       if !jssp
         current_user.last_advanced=0

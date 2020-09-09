@@ -120,7 +120,7 @@ function buy_select(attr, level){
       points = skills[attr][1]
     }
     extraPoints += skills[attr][2]-points
-    $('#extraPoints').html(Math.floor(extraPoints))
+    $('#extraPoints').html(String(Math.floor(extraPoints))+  " points Price: 10p")
 
     skills[attr][2]= points
     bought = points/10
@@ -132,7 +132,7 @@ function buy_select(attr, level){
 
     }
     extraPoints-=buying
-    $('#extraPoints').html(Math.floor(extraPoints))
+    $('#extraPoints').html(String(Math.floor(extraPoints))+ " points Price: 10p")
     skills[attr][2]+= buying
     var bought = skills[attr][2]/10
     console.log(bought);
@@ -149,7 +149,7 @@ function subs(e,id){
     extraPoints += 10
   }
 
-  $('#extraPoints').html(Math.floor(extraPoints))
+  $('#extraPoints').html(String(Math.floor(extraPoints))+" points Price: 10p")
   var bought = skills[id][2]/10
   console.log(bought);
   removeFrom(id,bought)
@@ -162,7 +162,7 @@ function plus(e,id){
     extraPoints -= 10
   }
 
-  $('#extraPoints').html(Math.floor(extraPoints))
+  $('#extraPoints').html(String(Math.floor(extraPoints))+" points Price: 10p")
   var bought = skills[parseInt(id)][2]/10
   console.log(bought);
   buyTill(id,bought)
