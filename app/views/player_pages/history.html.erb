@@ -82,7 +82,8 @@
 
 <img class = "right" src="pic_trulli.jpg" alt="Character" style="max-height: 53vw; max-width: 45%; float:left;" id="char">
 <div style = "height:33vw; width: 47%; float: left;"><img src="assets/background_tutorial_begin.png" style="height:100%; width:100%" id="tutorial" alt="tutorial"></div></div>
-
+<button type="button" onclick="back(event)">previous</button>
+<button type="button" onclick="next_page()">Skip story</button>
 <%
 #@dialogs = [["hey", "image", "d-left"],["what?", "image", "d-right"], ["hello :P", "image", "d-left"], ["hey", "image", "d-right"],["what?", "image", "d-left"],
 #["hello :P", "image", "d-right"]]
@@ -139,7 +140,8 @@ function changeScene(){
 
 document.addEventListener("click",next_dialog)
 
-function back(){
+function back(e){
+  e.stopPropagation()
   moment-=1
   if (moment<0){
     moment = 0
