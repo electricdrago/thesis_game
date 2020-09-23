@@ -126,7 +126,8 @@ class machine {
         activity.update_status(starting_time, end_time)
         activity.position = position
         if (this.time_taken>maxTime){
-          window.alert("Activity overflow")
+          move_not_possible("Activity overflow");
+          activity.undo()
           endGame()
         }
 
@@ -190,7 +191,8 @@ class machine {
       this.time_taken = end_time
     }
     if (this.time_taken>maxTime){
-      window.alert("Activity overflow")
+      move_not_possible("Activity overflow");
+      activity.undo()
       endGame()
     }
     activity.update_status(starting_time, end_time)
@@ -377,7 +379,7 @@ class activities{
     var i
     for (i=0; i < activities_cost.length; i++){
       this.activities[i] = new activity(i, this, activities_cost[i][0], activities_cost[i][0], jss, activities_cost[i][1], activities_cost[i][2])
-      console.log("activity", i, activities_cost[i][1])
+
       this.total_cost += activities_cost[i][0]
     }
     this.remaining_time = this.total_cost
@@ -469,9 +471,9 @@ class JSSProblem {
       tempInfo = this.activities[j].getTimes()
       total += tempInfo[0]
       total_done += tempInfo[1]
-      console.log(j, tempInfo)
+
     }
-    console.log( total, total_done)
+
     return total_done*1.0/total
   }
 
@@ -632,8 +634,5 @@ class solver {
 }
 
 function move_not_possible(msg){
-  console.log(msg)
-  if (!waiting){
-    window.alert(msg)
-  }
+
 }

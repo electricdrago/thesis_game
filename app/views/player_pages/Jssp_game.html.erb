@@ -34,7 +34,7 @@
   }
 
   body {
-   background-image: url('assets/space.jpg');
+   background-image: url('/assets/space.jpg');
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-size: cover;
@@ -264,6 +264,12 @@ function dropEffect(element, target){
 }
 
 <%= render "jssp.js"%>
+function move_not_possible(msg){
+  console.log(msg)
+  if (!waiting){
+    window.alert(msg)
+  }
+}
 
 var maxTime = <%=@maxTime%>
 var activities_map = []
@@ -276,7 +282,7 @@ function moveValues(array, seed){
 var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
 var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
 var machine_type = ""
-var aliens =["assets/nicubunu_Game_baddie_Alien.png", "assets/nicubunu_Game_baddie_Billy.png", "assets/nicubunu_Game_baddie_Bricky.png"]
+var aliens =["/assets/nicubunu_Game_baddie_Alien.png", "/assets/nicubunu_Game_baddie_Billy.png", "/assets/nicubunu_Game_baddie_Bricky.png"]
 <% @machine_type.each_char { |c|%>
   machine_type+=<%=c%>
 <%}%>
@@ -386,9 +392,11 @@ function move_activity(machine, position, activity, time_wasted, next_activity){
       mach.insertBefore(hidden_space,act)
     }
   }
-
-  $('#percentage').html(String(Math.floor(slvr.get_done()*100))+'% completed')
-
+  var points = slvr.get_done()
+  $('#percentage').html(String(Math.floor(points*100))+'% completed')
+  if (points >=1){
+    endGame()
+  }
 }
 
 
@@ -451,10 +459,10 @@ function transform_movement(machine, activity, next_activity){
 
 function move(activity, machine, position){
   //compute movement
-
+  sendDataMovement(activity, machine, position)
   var c =slvr.do_step(activities_map[activity], machine, position)
 
-  sendDataMovement(activity, machine, position)
+
   step +=1
   return c
 }
@@ -475,6 +483,7 @@ function print_per(){
 function endGame(){
   //Hacer un boton de tipo post o "hacerlo", pero todo al activar esta funcion
   var points = slvr.get_done()
+  $('#percentage').html(String(Math.floor(points*100))+'% completed')
   var data = {"points": points, "idGame":idGame}
   create_post(data,"/end_game")
 }

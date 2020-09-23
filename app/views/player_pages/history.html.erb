@@ -89,8 +89,12 @@
 #@dialogs.push([j.dialog, j.character j.side])
 %>
 <script>
-var dialogs = <%=raw @dialogs.to_json%>
-var scenes = <%=raw @scenes.to_json%>
+var story
+<%= render "player_pages/stories/strength1.js"%>
+//var dialogs = <%=raw @dialogs.to_json%>
+//var scenes = <%=raw @scenes.to_json%>
+var dialogs = story["dialogs"]
+var scenes = story["scenes"]
 var moment = -1
 var scene = 0
 next_dialog()
@@ -104,32 +108,62 @@ function next_dialog(){
     var dialog_box = document.getElementById("box")
     var image = document.getElementById("char")
     dialog_box.classList.remove("d-left","d-right")
-    dialog_box.classList.add("d-"+dialogs[moment][2])
+    dialog_box.classList.add("d-"+dialogs[moment][3])
     dialog = document.getElementById("dialog")
-    dialog.innerHTML = dialogs[moment][0]
+    dialog.innerHTML = dialogs[moment][1]
     //dialog.innerHTML = "este es un texto muuuuuuuuuy laaaaaaaaargo o supuestamente lo mazimo que deberia de hablar alguien para probar como se vees"
-    image.src = "assets/"+dialogs[moment][1]
-    image.className = dialogs[moment][2]
-    
-    if (scene<scenes.length && scenes[scene][0]<=moment){
+    image.src = "assets/"+dialogs[moment][2]
+    image.className = dialogs[moment][3]
 
-      if(scenes[scene][2]){
-
-        //document.body.style.backgroundImage = "url('assets/lab.jpg')"
-        var back = document.getElementById("tutorial")
-        back.src = "assets/"+scenes[scene][1]
-        back.hidden = false
-      } else {
-        document.body.style.backgroundImage = "url('assets/"+scenes[scene][1]+"')"
-        var back = document.getElementById("tutorial")
-        back.hidden = true
-      }
-
-      scene+=1
+    if (scene<scenes.length && scenes[scene][1]<=moment){
+      changeScene()
     }
   }
 }
+
+function changeScene(){
+  if(scenes[scene][2]){
+
+    //document.body.style.backgroundImage = "url('assets/lab.jpg')"
+    var back = document.getElementById("tutorial")
+    back.src = "assets/"+scenes[scene][0]
+    back.hidden = false
+  } else {
+    document.body.style.backgroundImage = "url('assets/"+scenes[scene][0]+"')"
+    var back = document.getElementById("tutorial")
+    back.hidden = true
+  }
+
+  scene+=1
+}
+
 document.addEventListener("click",next_dialog)
+
+function back(){
+  moment-=1
+  if (moment<0){
+    moment = 0
+  }
+  var dialog_box = document.getElementById("box")
+  var image = document.getElementById("char")
+  dialog_box.classList.remove("d-left","d-right")
+  dialog_box.classList.add("d-"+dialogs[moment][3])
+  dialog = document.getElementById("dialog")
+  dialog.innerHTML = dialogs[moment][1]
+  image.src = "assets/"+dialogs[moment][2]
+  image.className = dialogs[moment][3]
+
+  scene-=1
+  if (scene<0){
+    scene = 0
+  }
+  changeScene()
+  if (scene<scenes.length && scenes[scene][1]<=moment){
+    changeScene()
+  }
+
+
+}
 
 function next_page(){
 

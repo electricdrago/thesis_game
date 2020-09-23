@@ -65,19 +65,26 @@ class AdminController < ApplicationController
     #p "kjhkjhkjhkjh\n khkjhkjkjkjhkj"
     @answer = GamesPlayed.new()
     @answer.save
-    maxLevel=Jssp.count("level = "+params[:level].to_s)
+    maxLevel=Jssp.where(level: params[:level].to_i).count
+    mapA = []
+
     @JSSP = Jssp.new(number_machines: params[:number_machines], time_limit: params[:time_limit], diff_machines:true, machines: params[:machines], level: params[:level], number: maxLevel, answer:@answer.id)
     if @JSSP.save
       @message += "JSSP created "
       job_id = 0
-      p @JSSP.id
+
+
       params[:JSSP].each{ |k,i|
         activity_position = 0
+        mapA[job_id]=[]
         i.each{|ky,j|
           @activity = JsspActivity.new(number_job: job_id, idJSSP: @JSSP.id, order: activity_position, time_cost:j[0], machine_type: j[1])
+          p mapA, job_id, activity_position
+
           #@message +="number_job"+ job_id.to_s + "idJSSP"+ @JSSP.id.to_s + "order"+ activity_position.to_s + "time_cost"+j[0].to_s + "machine_type"+ j[1].to_s
           if @activity.save
             @message+="success\n"
+            mapA[job_id][activity_position] = @activity.id
           else
             @message+="failed\n"
           end
@@ -86,7 +93,7 @@ class AdminController < ApplicationController
         job_id+=1
       }
       params[:answer].each{ |k, i|
-        @step = Step.new(idGame: @answer.id, number_step: i[0], idActivity: i[1], number_machine: i[2], position: i[3])
+        @step = Step.new(idGame: @answer.id, number_step: i[0], idActivity: mapA[i[1].to_i][i[2].to_i], number_machine: i[3], position: i[4])
         @step.save
       }
 

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   post 'end_game' => 'player_pages#end_game'
   post 'read_story' => 'player_pages#readStory'
   post 'add_points' => 'player_pages#addPoints'
+  get 'answer/:id' => 'player_pages#answer'
+
 
   get 'jssp_info/:id' => 'admin#jssp_info'
   get 'stories' => 'admin#stories'

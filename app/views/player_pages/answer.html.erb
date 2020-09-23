@@ -1,0 +1,283 @@
+<!-- conseguir un game especifico y los alienigenas especificos de ese game, o del estado del jugador -->
+<style>
+/*
+  .selected {
+    border: 9px solid green !important;
+  }
+  */
+  .over {
+    border: 7px solid yellow !important;
+  }
+  .wrong {
+    border: 7px solid red !important;
+  }
+  button {
+    background-color: lightseagreen;
+    color: white;
+    padding: 3% 5%;
+    margin: .5vw;
+    border: none;
+    cursor: pointer;
+    font-size: 3.5vw
+  }
+  a {
+    background-color: lightblue;
+    color: red;
+    margin: .4vw 0;
+    width: 20%;
+    font-size: 2.3vw;
+    text-align: center;
+    align-items: center;
+    position: fixed;
+    top: 1%;
+    right:3%;
+  }
+
+  body {
+   background-image: url('/assets/space.jpg');
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: cover;
+  }
+
+  body, html{
+    top:0;
+    left:0;
+  }
+  .title {
+      margin-top: 2%;
+      margin-bottom: 3%;
+      position:relative;
+      color: white;
+      font-size: 8vmin;
+      font-family: Arial, Helvetica, sans-serif;
+      text-shadow: 0px 0px 0 rgb(-12,184,243),
+                   -1px -1px 0 rgb(-24,172,231),
+                   -2px -2px 0 rgb(-36,160,219),
+                   -3px -3px 0 rgb(-48,148,207),
+                   -4px -4px 0 rgb(-59,137,196),
+                   -5px -5px 0 rgb(-71,125,184),
+                   -6px -6px 0 rgb(-83,113,172),
+                   -7px -7px 0 rgb(-95,101,160),
+                   -8px -8px 0 rgb(-107,89,148),
+                   -9px -9px  0 rgb(-119,77,136),
+                   -10px -10px 9px rgba(0,0,0,0.77),
+                   -10px -10px 1px rgba(0,0,0,0.5),
+                   0px 0px 9px rgba(0,0,0,.2);
+
+  }
+
+
+</style>
+<h1 class="title">Your answer:</h1>
+<div id="jobs" style="width:0.01%;" hidden = true></div>
+<div id="machines"></div>
+<h1 class="title">Scientists answer:</h1>
+<div id="jobsC" hidden = true style="width:0.01%"></div>
+<div id="machinesC"></div>
+
+<button type="button" onclick="endGame()">Next Game</button> <br> <br>
+
+<%= link_to 'logout', 'logout' %>
+
+<script>
+
+<%= render "jssp.js"%>
+var ev = ""
+var evA=0
+var pevA = 0
+var evM =0
+var maxTime = <%=@maxTime%>
+var activities_map = []
+function moveValues(array, seed){
+  movement = seed%array.length
+  newarr = array.slice(movement,array.length).concat(array.slice(0,movement))
+  return newarr
+}
+//los ultimos colores estan feos
+var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
+var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
+var machine_type = ""
+var aliens =["/assets/nicubunu_Game_baddie_Alien.png", "/assets/nicubunu_Game_baddie_Billy.png", "/assets/nicubunu_Game_baddie_Bricky.png"]
+<% @machine_type.each_char { |c|%>
+  machine_type+=<%=c%>
+<%}%>
+
+
+
+function addJob(id,activities){
+  //Job will have the size of each activity and its id
+  // activities[x] = [activity cost, machine type, activity id]
+
+  var job = document.createElement("div")
+  job.setAttribute("id","job"+ev+String(id))
+  job.setAttribute("style", "height: 0.1px;")
+
+
+  var j
+  for (j=0; j<activities.length; j++){
+    var activity = document.createElement("div")
+    activity.setAttribute("id", "activity"+String(activities[j][2]+evA))
+    activity.setAttribute("class","activity")
+    activity.setAttribute("style", "box-sizing: border-box; width: "+String(activities[j][0]/maxTime*100)+"%; "+
+        "height: 100%; float:left; background: "+ job_colors[id]+"; border: solid; border-width: 7px .7vw; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
+    var original_position = document.createElement("div")
+    var img = document.createElement("img")
+    img.setAttribute("src",aliens[activities[j][1]])
+    img.setAttribute("style", "height:100%; max-width:100%; pointer-events: none;")
+    //img.setAttribute("ondragstart", "function(event){event.preventBubble(); event.stopPropagation()}")
+    activity.appendChild(img)
+    original_position.setAttribute("id", "original"+activity.id)
+    original_position.setAttribute("style", "width:0 ;float:left;")
+    job.appendChild(activity)
+    job.appendChild(original_position)
+
+  }
+  var jobs = document.getElementById("jobs"+ev)
+  jobs.appendChild(job)
+  small_space = document.createElement("div")
+  small_space.setAttribute("style", "height: 10px")
+  jobs.appendChild(small_space)
+
+
+}
+
+function createMachines(amount){
+  var j
+  for (j = 0; j < amount; j++){
+    var tempDiv = document.createElement("div")
+    tempDiv.setAttribute("style", "width:100%; height: 90px; ")
+    var img = document.createElement("img")
+    img.setAttribute("src",aliens[(parseInt(machine_type.charAt(j))||0)])
+    img.setAttribute("style", "max-height:70px; max-width:14%;float:left")
+    var machine = document.createElement("div")
+    machine.setAttribute("id", "machine"+String(j+evM))
+    machine.setAttribute("class", "machine")
+    machine.setAttribute("style", "height: 70px; width:80%; float:left; border: 7px solid "+machine_colors[(parseInt(machine_type.charAt(j))||0)]+";")
+    var machines = document.getElementById("machines"+ev)
+    tempDiv.appendChild(img)
+    tempDiv.appendChild(machine)
+    machines.appendChild(tempDiv)
+    small_space = document.createElement("div")
+
+    small_space.setAttribute("style", "height: 10px")
+    machines.appendChild(small_space)
+  }
+}
+
+function move_activity(machine, position, activity, time_wasted, next_activity){
+  //console.log("move", machine, position, activity, time_wasted, next_activity)
+  machine+=evM
+  activity = String(activity+evA)
+  if (machine == -1){
+    //get activity to original position
+    var original_position = document.getElementById("originalactivity"+activity)
+    var act = document.getElementById("activity"+activity)
+    if(original_position){
+      original_position.parentNode.insertBefore(act, original_position)
+      hidden_space = document.getElementById("hiddenactivity"+activity)
+      if(hidden_space){
+        hidden_space.parentNode.removeChild(hidden_space)
+      }
+    }
+  }else {
+    var act = document.getElementById("activity"+activity)
+    act.onclick= ""
+    act.ontouchstart = ""
+    act.classList.add("droppable")
+    var hidden_space = document.getElementById("hiddenactivity"+activity)
+
+    var mach = document.getElementById("machine"+String(machine))
+    if (!hidden_space){
+      hidden_space = document.createElement("div")
+      hidden_space.setAttribute("id","hiddenactivity"+activity)
+      hidden_space.setAttribute("class","hidden_space")
+      hidden_space.setAttribute("style", "height: 100%; width: 1%;float:left;")
+      hidden_space.classList.add("droppable")
+    }
+    hidden_space.style.width = String(time_wasted/maxTime*100)+"%"
+    if(position <0 || next_activity<0){
+      //add to end of machine (just append)
+      mach.appendChild(act)
+      mach.insertBefore(hidden_space,act)
+    } else {
+      act_2_hidden = document.getElementById("hiddenactivity"+String(next_activity))
+      //console.log("moving", activity, "before", next_activity, act_2_hidden)
+      mach.insertBefore(act, act_2_hidden)
+      mach.insertBefore(hidden_space,act)
+    }
+  }
+
+
+}
+
+
+
+var idGame = <%=@idGame%>
+var step = 0
+var slvr = new solver()
+var smallA = 0
+var source = {machines: <%= @n_machines%>, machine_type: machine_type, activities: assignJobs(<%= @JSSA%>)}
+createMachines(<%= @n_machines%>)
+var saved_steps = <%=@steps%>
+program = new JSSProblem(idGame, source, slvr, saved_steps)
+ev = "C"
+evA = pevA
+evM = <%= @n_machines%>
+var slvrA = new solver()
+var sourceA = {machines: <%= @n_machines%>, machine_type: machine_type, activities: assignJobs(<%= @JSSA%>)}
+createMachines(<%= @n_machines%>)
+var saved_stepsA = <%=@stepsA%>
+waiting = true
+console.log(saved_stepsA)
+programA = new JSSProblem(idGame, sourceA, slvrA, saved_stepsA)
+function assignJobs(activities_info){
+  // will add activities to its respective job in order
+  // convert [#job, position, time_cost,id activity, machine_type] to
+  //source.activities (activities from each job)
+  //source.activities[x] (activities from job x where you have [activity cost, machine type, activity id])
+
+  var i
+  var number_jobs = 0
+
+  for (i = 0; i < activities_info.length; i++){
+    if (activities_info[i][0]>number_jobs){
+      number_jobs = activities_info[i][0]
+    }
+  }
+  number_jobs++;
+
+  var jobs = []
+  for (i = 0; i < number_jobs; i++){
+    jobs.push([])
+  }
+  for (i = 0; i < activities_info.length; i++){
+    var temp = activities_info[i]
+
+    jobs[temp[0]][temp[1]] =[temp[2], temp[4], temp[3]]
+    console.log(jobs[temp[0]][temp[1]] )
+  }
+  //display jobs by using function addJob(jobId, list of activities)
+  var j
+  for (j = 0; j <jobs.length; j++){
+    addJob(j, jobs[j])
+  }
+  pevA=activities_info.length
+  return jobs
+}
+
+
+
+function checkMovement(activity, machine, position){
+
+}
+
+
+
+function endGame(){
+
+}
+
+
+
+</script>

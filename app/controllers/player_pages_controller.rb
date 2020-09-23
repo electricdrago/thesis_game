@@ -64,7 +64,7 @@ class PlayerPagesController < ApplicationController
       end
     end
     #redirect_to 'shop'
-    redirect_to '/shop'
+    redirect_to '/answer/'+params[:idGame]
   end
 
   def restart_game
@@ -164,8 +164,8 @@ class PlayerPagesController < ApplicationController
         break
       end
     end
-    @story ||= Story.find(2)
-    #@story ||= Story.first
+    #@story ||= Story.find(2)
+    @story ||= Story.first
     #@story = Story.find(2)
     dialogs = Dialog.where(storyId: @story.id).order(:order)
     @dialogs = []
@@ -182,6 +182,39 @@ class PlayerPagesController < ApplicationController
       @scenes.push([0,"lab.jpg",false])
     end
 
+  end
+
+  def answer
+    @idGame = params[:id]
+    @Game = GamesPlayed.find_by(id: @idGame)
+    p @Game
+    @JSSP = Jssp.find_by(id: @Game.idJSSP)
+    #@JSSP = Jssp.find_by(id: 16)
+
+    #n_machines (Number of machines that this problem has)
+    #machine_type (string with the type of each string, assume that maximum type id = 9)
+    #JSSA (each activity, includes [#job, position, time_cost,id activity, machine_type])
+    #@idGame = 0
+    @n_machines = @JSSP.number_machines
+    @machine_type = @JSSP.machines
+    @maxTime = @JSSP.time_limit
+    @JSSA = []
+    activities = JsspActivity.where(idJSSP: @JSSP.id)
+
+    activities.each do |i|
+      @JSSA.push([i.number_job, i.order, i.time_cost, i.id, i.machine_type])
+    end
+    steps = Step.where(idGame: @idGame).order(:number_step)
+    @steps = []
+    steps.each do |j|
+      @steps.push([j.idActivity, j.number_machine, j.position])
+    end
+    @answer = @JSSP.answer
+    steps = Step.where(idGame: @answer).order(:number_step)
+    @stepsA = []
+    steps.each do |j|
+      @stepsA.push([j.idActivity, j.number_machine, j.position])
+    end
   end
 
 
