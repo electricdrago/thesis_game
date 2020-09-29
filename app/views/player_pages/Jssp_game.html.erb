@@ -75,6 +75,7 @@
 <%= link_to 'logout', 'logout' %>
 
 <script>
+
 function getDocHeight(){
   return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight,
   document.body.offsetHeight, document.documentElement.offsetHeight,
@@ -93,11 +94,22 @@ function resizeSvg(){
 }
 window.onload = resizeSvg
 window.onresize= resizeSvg;
-function lineFollowMouse(ev){
-  var line = document.getElementById("line")
-  line.x2.baseVal.value = ev.pageX
+function lineFollowMouse(e){
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch
+  if(evt.changedTouches){
+    touch = evt.changedTouches[0];
+  }
+  if (evt.touches){
+    touch = evt.touches[0];
+  }
 
-  line.y2.baseVal.value = ev.pageY
+
+  e = touch || e
+  var line = document.getElementById("line")
+  line.x2.baseVal.value = e.pageX
+
+  line.y2.baseVal.value = e.pageY
 
 }
 
@@ -105,6 +117,17 @@ function prepareDrag(e){
   //create drag copy
   dc = e.target
   var prev = document.createElement("div")
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch
+  if(evt.changedTouches){
+    touch = evt.changedTouches[0];
+  }
+  if (evt.touches){
+    touch = evt.touches[0];
+  }
+
+
+  e = touch || e
 
   prev.setAttribute("id", "prev"+dc.id)
   prev.setAttribute("style", "width:0 ;float:left;")
@@ -124,6 +147,17 @@ function prepareDrag(e){
   var currTarget = null
   function moveDrag(event){
     e = event
+    var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+    var touch
+    if(evt.changedTouches){
+      touch = evt.changedTouches[0];
+    }
+    if (evt.touches){
+      touch = evt.touches[0];
+    }
+
+
+    e = touch || e
     toPos(dc, e.pageY-dc.offsetHeight/2, e.pageX)
     svg = document.getElementById("svg")
     svg.style.zIndex = "-1"
@@ -163,6 +197,7 @@ function prepareDrag(e){
 
     line.x1.baseVal.value = prevAct.offsetLeft+y* parseFloat(w.substring(0,w.length-1))*.01*.8
     document.addEventListener("mousemove", lineFollowMouse, true)
+    document.addEventListener("touchmove", lineFollowMouse, true)
   }
   document.addEventListener("mousemove",moveDrag)
   document.addEventListener("touchmove", moveDrag)
@@ -174,11 +209,12 @@ function prepareDrag(e){
     svg = document.getElementById("svg")
     svg.style.zIndex = "-1"
     document.removeEventListener("mousemove", lineFollowMouse, true)
+    document.removeEventListener("touchmove", lineFollowMouse, true)
     line.x1.baseVal.value = 0
     line.y1.baseVal.value = 0
     line.x2.baseVal.value = 0
     line.y2.baseVal.value = 0
-    //document.removeEventListener("touchmove",moveDrag)
+    document.removeEventListener("touchmove",moveDrag)
     dc.style.float = "left"
     dc.style.height = "100%"
 
@@ -204,8 +240,7 @@ function prepareDrag(e){
   dc.onclick = dropIt
   dc.ontouchend = dropIt
   dc.ontouchcancel = dropIt
-  console.log(dc)
-  console.log(dc.onclick, dc.ontouchend, dc.ontouchcancel)
+
 
 }
 
@@ -279,10 +314,14 @@ function moveValues(array, seed){
   return newarr
 }
 //los ultimos colores estan feos
-var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
-var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
+
+//var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
+var job_colors = moveValues(["#E8F086", "#235FA4", "#6FDE6E", "#FF4242", "#A691AE", "#0A284B"], <%=@JSSP.id%>)
+//var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
+var machine_colors = moveValues([ "#848FA2", "#2D3142","#E1DAAE", "#CC2D35", "#058ED9", "#FF934F"], <%=@JSSP.id%>)
 var machine_type = ""
-var aliens =["/assets/nicubunu_Game_baddie_Alien.png", "/assets/nicubunu_Game_baddie_Billy.png", "/assets/nicubunu_Game_baddie_Bricky.png"]
+//var aliens =["/assets/nicubunu_Game_baddie_Alien.png", "/assets/nicubunu_Game_baddie_Billy.png", "/assets/nicubunu_Game_baddie_Bricky.png"]
+aliens = <%= raw @aliens%>
 <% @machine_type.each_char { |c|%>
   machine_type+=<%=c%>
 <%}%>
@@ -407,6 +446,7 @@ var slvr = new solver()
 var source = {machines: <%= @n_machines%>, machine_type: machine_type, activities: assignJobs(<%= @JSSA%>)}
 createMachines(<%= @n_machines%>)
 var saved_steps = <%=@steps%>
+console.log(saved_steps)
 program = new JSSProblem(idGame, source, slvr, saved_steps)
 
 function assignJobs(activities_info){

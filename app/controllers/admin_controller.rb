@@ -63,7 +63,7 @@ class AdminController < ApplicationController
     @num=0
     #p params
     #p "kjhkjhkjhkjh\n khkjhkjkjkjhkj"
-    @answer = GamesPlayed.new()
+    @answer = GamesPlayed.new(downloaded: 3)
     @answer.save
     maxLevel=Jssp.where(level: params[:level].to_i).count
     mapA = []

@@ -12,13 +12,17 @@
     border: 7px solid red !important;
   }
   button {
-    background-color: lightseagreen;
-    color: white;
-    padding: 3% 5%;
+    background-color: white;
+    color: blue;
+    padding: 1% 2%;
     margin: .5vw;
     border: none;
     cursor: pointer;
-    font-size: 3.5vw
+    font-size: 2.7vw;
+    position: fixed;
+    top: 5vw;
+    right:3%;
+
   }
   a {
     background-color: lightblue;
@@ -69,14 +73,14 @@
 
 
 </style>
-<h1 class="title">Your answer:</h1>
+<h1 class="title">Your answer with <%=@points%>% completed</h1>
 <div id="jobs" style="width:0.01%;" hidden = true></div>
 <div id="machines"></div>
 <h1 class="title">Scientists answer:</h1>
 <div id="jobsC" hidden = true style="width:0.01%"></div>
 <div id="machinesC"></div>
 
-<button type="button" onclick="endGame()">Next Game</button> <br> <br>
+<button type="button" onclick="endGame2()">Next Game</button> <br> <br>
 
 <%= link_to 'logout', 'logout' %>
 
@@ -95,10 +99,14 @@ function moveValues(array, seed){
   return newarr
 }
 //los ultimos colores estan feos
-var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
-var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
+//var job_colors = moveValues(["magenta", "GreenYellow", "aqua", "palegreen", "rebeccapurple"], <%=@JSSP.id%>)
+var job_colors = moveValues(["#E8F086", "#235FA4", "#6FDE6E", "#FF4242", "#A691AE", "#0A284B"], <%=@JSSP.id%>)
+//var machine_colors = moveValues([ "blue", "green", "red", "Indigo", "Orange", "orangeRed"], <%=@JSSP.id%>)
+var machine_colors = moveValues([ "#848FA2", "#2D3142","#E1DAAE", "#CC2D35", "#058ED9", "#FF934F"], <%=@JSSP.id%>)
 var machine_type = ""
-var aliens =["/assets/nicubunu_Game_baddie_Alien.png", "/assets/nicubunu_Game_baddie_Billy.png", "/assets/nicubunu_Game_baddie_Bricky.png"]
+//var aliens =["/assets/nicubunu_Game_baddie_Alien.png", "/assets/nicubunu_Game_baddie_Billy.png", "/assets/nicubunu_Game_baddie_Bricky.png"]
+aliens = <%= raw @aliens%>
+
 <% @machine_type.each_char { |c|%>
   machine_type+=<%=c%>
 <%}%>
@@ -273,9 +281,9 @@ function checkMovement(activity, machine, position){
 }
 
 
-
-function endGame(){
-
+function endGame(){}
+function endGame2(){
+  window.location.href ="/shop"
 }
 
 

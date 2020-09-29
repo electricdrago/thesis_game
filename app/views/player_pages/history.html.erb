@@ -74,24 +74,53 @@
     100% {left: 60px; top:30px}
   }
 
+  .skip {
+    width: 22vmin;
+    height: 14vmin;
+    font-size: 3vmin;
+    position: fixed;
+    bottom: 2vmin;
+    right:3%;
+    border: round;
+    background-color: orange;
+    color: blue;
+    padding: .7vmin 1.2vmin;
+  }
+  .prev {
+    width: 22vmin;
+    height: 14vmin;
+    font-size: 3vmin;
+    position: fixed;
+    bottom: 2vmin;
+    left:3%;
+    border: round;
+    background-color: orange;
+    color: blue;
+    padding: .7vmin 1.2vmin;
+  }
 
 </style>
 
 <div id= "box" class= "dialog-box d-right"><p id="dialog">Yes you can start by doing blas</p><p id="next-but">click anywhere</p></div>
 <br>
 
-<img class = "right" src="pic_trulli.jpg" alt="Character" style="max-height: 53vw; max-width: 45%; float:left;" id="char">
-<div style = "height:33vw; width: 47%; float: left;"><img src="assets/background_tutorial_begin.png" style="height:100%; width:100%" id="tutorial" alt="tutorial"></div></div>
-<button type="button" onclick="back(event)">previous</button>
-<button type="button" onclick="next_page()">Skip story</button>
-<%
-#@dialogs = [["hey", "image", "d-left"],["what?", "image", "d-right"], ["hello :P", "image", "d-left"], ["hey", "image", "d-right"],["what?", "image", "d-left"],
-#["hello :P", "image", "d-right"]]
-#@dialogs.push([j.dialog, j.character j.side])
-%>
+<img class = "right" src="assets/nicubunu_Game_baddie_Basic_guy.jpg" alt="Character" style="max-height: 53vw; max-width: 45%; float:left;" id="char">
+<div style = "height:33vw; width: 47%; float: left;"><img src="assets/background_lab.jpg" style="height:100%; width:100%" id="tutorial" alt="tutorial"></div></div>
+<button type="button" class = "prev" onclick="back(event)">Previous</button>
+<button type="button" class = "skip" onclick="next_page()">Skip Story</button>
+
 <script>
 var story
-<%= render "player_pages/stories/strength1.js"%>
+var story2 = {
+  //order, dialog, character, side
+  "dialogs": [[0, "Nothing seems to be happening yet, keep it going", "nicubunu_Game_baddie_Basic_guy.png", "right"]],
+  //background, frame, tutorial? (small frame)
+  "scenes": [["background_space.jpg", 0, false]],
+  //strength, intelligence, curiosity, organization, construction
+  "levels": [0,0,0,0,0]
+}
+<%= render "player_pages/stories/"+ @story%>
+story = story || story2
 //var dialogs = <%=raw @dialogs.to_json%>
 //var scenes = <%=raw @scenes.to_json%>
 var dialogs = story["dialogs"]
@@ -111,7 +140,7 @@ function next_dialog(){
     dialog_box.classList.remove("d-left","d-right")
     dialog_box.classList.add("d-"+dialogs[moment][3])
     dialog = document.getElementById("dialog")
-    dialog.innerHTML = dialogs[moment][1]
+    dialog.innerHTML = dialogs[moment][1].replace("!!user", "<%=current_user.name%>")
     //dialog.innerHTML = "este es un texto muuuuuuuuuy laaaaaaaaargo o supuestamente lo mazimo que deberia de hablar alguien para probar como se vees"
     image.src = "assets/"+dialogs[moment][2]
     image.className = dialogs[moment][3]
@@ -151,11 +180,11 @@ function back(e){
   dialog_box.classList.remove("d-left","d-right")
   dialog_box.classList.add("d-"+dialogs[moment][3])
   dialog = document.getElementById("dialog")
-  dialog.innerHTML = dialogs[moment][1]
+  dialog.innerHTML = dialogs[moment][1].replace("!!user", "<%=current_user.name%>")
   image.src = "assets/"+dialogs[moment][2]
   image.className = dialogs[moment][3]
 
-  scene-=1
+  scene-=2
   if (scene<0){
     scene = 0
   }
@@ -169,7 +198,7 @@ function back(e){
 
 function next_page(){
 
-  var data = {"storyId": <%= @story.id%>}
+  var data = {"storyId": <%= @st%>}
   create_post(data,"/read_story")
 }
 

@@ -7,7 +7,7 @@ var story = {
   [0, "yeah, they are kind of poetic as they want to impress women, still their strengths is actually impressive", "nicubunu_Game_baddie_Basic_guy.png", "right"],
   [1, "Never fear as I am here", "nicubunu_Game_baddie_Warrior.png", "left"]],
   //background, frame, tutorial? (small frame)
-  "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 1, false]],
+  "scenes": [["background_land.jpg", 0, false]],
   //strength, intelligence, curiosity, organization, construction
   "levels": [30,0,0,0,0]
 }
