@@ -28,6 +28,10 @@ Rails.application.routes.draw do
 
   get 'prepare' => "admin#makeData"
   get 'download' => "admin#getData"
+  get 'email' => "admin#email"
   get 'clean' => "admin#cleanMemory"
+  get 'delete_all' => "admin#deleteAll"
+  get 'full_pack' => "admin#fullPack"
+  get 'data' => "admin#data"
 
 end

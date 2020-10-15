@@ -1,0 +1,29 @@
+<h1>Rows: <%=@rows%> of 10,000</h1>
+<h2><%=@message%></h2>
+
+<button type="button" onclick="prep()">Prepare</button>
+<button type="button" onclick="down()">Download</button>
+<button type="button" onclick="email()">Send Email</button>
+<button type="button" onclick="clean()">clean</button>
+<button type="button" onclick="ddel()">Delete</button>
+<button type="button" onclick="doall()">Do All</button>
+<script>
+function prep(){
+  window.location.href ="/prepare"
+}
+function down(){
+  window.location.href ="/download"
+}
+function email(){
+  window.location.href ="/email"
+}
+function clean(){
+  window.location.href ="/clean"
+}
+function ddel(){
+  window.location.href ="/delete_all"
+}
+function doall(){
+  window.location.href ="/full_pack"
+}
+</script>

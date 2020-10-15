@@ -13,13 +13,107 @@ class AdminController < ApplicationController
   end
 
   def makeData
-    prepareData
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    @steps = prepareData
+    @message ="data was prepared, "+@steps.to_s+" steps where prepared"
+    render 'data'
   end
   def getData
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
     downloadData
+    @message ="data was downloaded"
+    render 'data'
   end
   def cleanMemory
+
     cleanData
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    @message= "data was deleted"
+    render 'data'
+  end
+
+  def deleteAll
+    cleanData
+    deleteFile
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    @message= "data was deleted"
+    render 'data'
+  end
+
+
+  def email
+    send_email
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    @message= "email sent"
+    render 'data'
+  end
+
+  def fullPack
+    @steps = prepareData
+    p "data was prepared"
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    @message ="data was prepared, "+@steps.to_s+" steps where prepared, sent and deleted, rows where: "+@rows.to_s+" before delete"
+    p "data is going to downloas"
+    downloadData
+    p "data was sent to download"
+    deleteFile
+    p "data was deleted"
+    send_email
+    p "mail was sent"
+    cleanData
+    p "data was cleaned"
+
+    @rows=0
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    p "about to render"
+    render 'data'
+  end
+
+
+  def data
+    @rows = 0
+    Step
+    GamesPlayed
+    JsspActivity
+    Jssp
+
+    ApplicationRecord.descendants.collect { |type| @rows+=type.count }
+    @message = "No message to show"
   end
 
   def add_problems
