@@ -38,12 +38,13 @@ var story ={
 [39, "Don't worry if you are not able to do all of these puzzles, some are actually difficult. Now you could ask, why would I want points?", "nicubunu_Game_baddie_Geisha.png", "left"],
 [40, "Here is the shop. Here you will be able to improve your civient's world in many different aspects, your civients will evolve and become able to do different things.", "nicubunu_Game_baddie_Geisha.png", "left"],
 [41, "Every three sets you buy from a specific skill you'll see something new happening to your world, so I'll recommend you buy things three by three.", "nicubunu_Game_baddie_Geisha.png", "left"],
+[41, "Also, the more points you have the more difficult will the problems get", "nicubunu_Game_baddie_Geisha.png", "left"],
 [42, "Hi, I come from the future, everything is great thanks for everything", "nicubunu_Game_baddie_Borg.png", "left"],
 [43, "I guess I explained well then, that’s all you need to know, so let’s get started !!", "nicubunu_Game_baddie_Geisha.png", "left"]],
 "scenes": [["background_lab.jpg", 0, false], ["tutorial_activities.png", 10, true], ["tutorial_machines.png", 11, true], ["tutorial_first_selection.png", 12, true], ["tutorial_1_move.png", 13, true], ["tutorial_1_move2.png", 14, true], ["tutorial_2_move.png", 15, true], ["tutorial_2_move2.png", 16, true],
   ["tutorial_3_move_after.png", 17, true], ["tutorial_3_move_before.png", 18, true], ["tutorial_3_move2.png", 19, true], ["tutorial_4_move.png", 20, true], ["tutorial_5_move.png", 21, true], ["tutorial_6_move.png", 22, true],
   ["tutorial_wrong_move.png", 23, true], ["tutorial_overflow.png", 24, true], ["tutorial_overflow2.png", 25, true], ["tutorial_correct_move.png", 28, true], ["tutorial_correct_2_move.png", 29, true], ["tutorial_last_move.png", 30, true], ["tutorial_last_overflow.png", 31, true],
-  ["tutorial_science_answer.png", 32, true], ["tutorial_last_move.png", 34, true], ["background_tutorial_shop.png", 37, true], ["background_tutorial_shop_example.png", 38, true], ["background_lab.jpg", 39, false]],
+  ["tutorial_science_answer.png", 32, true], ["tutorial_last_move.png", 34, true], ["background_tutorial_shop.png", 37, true], ["background_tutorial_shop_example.png", 38, true], ["background_lab.jpg", 40, false]],
 //strength, intelligence, curiosity, organization, construction
 "levels": [0,0,0,0,0]
 }
