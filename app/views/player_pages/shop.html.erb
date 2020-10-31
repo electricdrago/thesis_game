@@ -6,7 +6,7 @@
 }
 
 .over {
-  border: 0.5vw solid yellow !important;
+  border: 0.5vmin solid yellow !important;
 }
 body {
  background-image: url('assets/lab.jpg');
@@ -19,16 +19,18 @@ button {
 	vertical-align: middle;
 	font-family: 'Rubik One', sans-serif;
 	text-decoration: none;
-	font-size: 2vw;
+	font-size: 2vmin;
 	background-color: #3498db;
+  z-index:3;
 
 }
 .title {
     margin-top: 2%;
     margin-bottom: 3%;
     position:relative;
-    color: blue;
-    font-size: 10vw;
+    color: violet;
+    font-size: 12vmin;
+    font-style: oblique;
     font-family: Arial, Helvetica, sans-serif;
     text-shadow: 0px 0px 0 rgb(-12,184,243),
                  -1px -1px 0 rgb(-24,172,231),
@@ -36,20 +38,17 @@ button {
                  -3px -3px 0 rgb(-48,148,207),
                  -4px -4px 0 rgb(-59,137,196),
                  -5px -5px 0 rgb(-71,125,184),
-                 -6px -6px 0 rgb(-83,113,172),
-                 -7px -7px 0 rgb(-95,101,160),
-                 -8px -8px 0 rgb(-107,89,148),
-                 -9px -9px  0 rgb(-119,77,136),
-                 -10px -10px 9px rgba(0,0,0,0.77),
-                 -10px -10px 1px rgba(0,0,0,0.5),
+                 1px -1px 0 rgb(-24,172,231),
+                 2px -2px 0 rgb(-36,160,219),
+                 3px -3px 0 rgb(-48,148,207),
                  0px 0px 9px rgba(0,0,0,.2);
 
 }
 .points {
   background: white;
-  width: 22vw;
-  height: 10vw;
-  font-size: 3.5vw;
+  width: 22vmin;
+  height: 10vmin;
+  font-size: 3.5vmin;
   text-align: center;
   align-items: center;
   position: fixed;
@@ -59,32 +58,42 @@ button {
 }
 </style>
 
-<p class="title" style="padding-left:3%">Shop</p>
-<p id="extraPoints" class="points"><%=@extra_points.floor%> points Price: 10p</p>
-
+<b><p class="title" style="padding-left:3%">Mutation Center</p></b>
+<p id="extraPoints" class="points"><%=@extra_points.floor%> points <br> Price: 10p</p>
+<%characters = [["nicubunu_Game_baddie_Warrior.png", "nicubunu_Game_baddie_Ninja.png", "nicubunu_Game_baddie_Camouflage.png"],
+["nicubunu_Game_baddie_Squared.png", "nicubunu_Game_baddie_.png", "nicubunu_Game_baddie_.png"],
+["nicubunu_Game_baddie_Devil.png", "nicubunu_Game_baddie_Billy.png", "nicubunu_Game_baddie_Stripey.png"],
+["nicubunu_Game_baddie_Sunglasser.png", "nicubunu_Game_baddie_Princess.png", "nicubunu_Game_baddie_Dandy.png"],
+["nicubunu_Game_baddie_Candy.png", "nicubunu_Game_baddie_Bricky.png", "nicubunu_Game_baddie_Geek.png"]
+]
+%>
 
 <%
 colors = ['red', 'yellow', 'green']
 z = 0
 for i in @items%>
 
-  <p style="font-size:3vw; background:white; opacity:.75; width: 22vw; height: 3vw; padding:3%; margin-bottom:.4vw"><%=i[0]%></p>
-  <div style="height: 6.5vw; width: 80%; background: rgba(255,255,255,.6); text-align:center; align-items:center; padding:3%">
-    <div id=<%= z%> style="height:5vw; width: 80%; top:16%; position:relative">
+  <p style="font-size:4vmin; background:white; opacity:.75; width: 22vmin; height: 3vmin; padding:1.3%; margin-bottom:.4vmin"><%=i[0]%></p>
+  <div style="height: 8.5vmin; width: 80%; background: rgba(255,255,255,.6); text-align:center; align-items:center; padding:1.3%">
+    <div id=<%= z%> style="height:7.2vmin; width: 80%; top:16%; position:relative">
       <%for j in 0..8%>
-        <div id= "<%= z %>,<%=j%>" class = "l<%= j/3 %>" onmouseover="select(this)" onmouseout="unselect(this)" onclick="buy_select(<%=z%>, <%=j%>)" style= "sizing: border-box;width:8%; height:100%;border: 0.5vw solid; float:left; background: <%=colors[j/3]%>; opacity: .3; " >  </div>
+        <div id= "<%= z %>,<%=j%>" class = "l<%= j/3 %>" onmouseover="select(this)" onmouseout="unselect(this)" onclick="buy_select(<%=z%>, <%=j%>)" style= "sizing: border-box;width:10%; height:100%;border: 0.5vmin solid; float:left; background: <%=colors[j/3]%>; opacity: .3; " >
+        <%if (j+1)%3==0 then%>
+        <img src="assets/<%=  raw characters[z][(j+1)/3-1]%>" style="height:110%; max-width:100%; pointer-events: none;">
+        <%end%>
+        </div>
 
       <%end%>
 
     </div>
-    <button type="button" onclick="subs(this,<%=z%>)" style="width:4vw; height: 4vw; top:-40%; position:relative; font-size:3vw;">-</button>
-    <button type="button" onclick="plus(this,<%=z%>)" style="width:4vw; height: 4vw;top:-40%; position:relative; font-size:3vw;">+</button>
+    <button type="button" onclick="subs(this,<%=z%>)" style="width:7vmin; height: 7vmin; top:-40%; position:relative; font-size:5vmin;">-</button>
+    <button type="button" onclick="plus(this,<%=z%>)" style="width:7vmin; height: 7vmin;top:-40%; position:relative; font-size:5vmin;">+</button>
   </div>
   <br>
   <br>
 <% z+=1%>
 <%end%>
-<button type="button" onclick="buy()" style="position: fixed; bottom: 10%;right:5%; font-size:3vw">Finish</button>
+<button type="button" onclick="buy()" style="position: fixed; bottom: 10%;right:5%; font-size:3vmin">Finish</button>
 
 <script>
 var skills = <%=raw @items.to_json%>
@@ -120,7 +129,7 @@ function buy_select(attr, level){
       points = skills[attr][1]
     }
     extraPoints += skills[attr][2]-points
-    $('#extraPoints').html(String(Math.floor(extraPoints))+  " points Price: 10p")
+    $('#extraPoints').html(String(Math.floor(extraPoints))+  "<br> points Price: 10p")
 
     skills[attr][2]= points
     bought = points/10
@@ -132,7 +141,7 @@ function buy_select(attr, level){
 
     }
     extraPoints-=buying
-    $('#extraPoints').html(String(Math.floor(extraPoints))+ " points Price: 10p")
+    $('#extraPoints').html(String(Math.floor(extraPoints))+ "<br> points Price: 10p")
     skills[attr][2]+= buying
     var bought = skills[attr][2]/10
     console.log(bought);
@@ -149,7 +158,7 @@ function subs(e,id){
     extraPoints += 10
   }
 
-  $('#extraPoints').html(String(Math.floor(extraPoints))+" points Price: 10p")
+  $('#extraPoints').html(String(Math.floor(extraPoints))+"<br> points Price: 10p")
   var bought = skills[id][2]/10
   console.log(bought);
   removeFrom(id,bought)
@@ -162,7 +171,7 @@ function plus(e,id){
     extraPoints -= 10
   }
 
-  $('#extraPoints').html(String(Math.floor(extraPoints))+" points Price: 10p")
+  $('#extraPoints').html(String(Math.floor(extraPoints))+"<br> points Price: 10p")
   var bought = skills[parseInt(id)][2]/10
   console.log(bought);
   buyTill(id,bought)

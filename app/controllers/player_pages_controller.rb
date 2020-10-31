@@ -59,7 +59,7 @@ class PlayerPagesController < ApplicationController
 
       if points>=0.85
         n = 10
-        points = points*(n + (current_user.points*0.1))
+        points += (10*points/130).to_i+15
         current_user.points+=points
       end
 

@@ -249,6 +249,21 @@ function toPos(element, top, left){
   element.style.left = String(left)+'px'
 }
 
+function markFirsts(){
+  jobs = document.getElementsByClassName("jobb");
+  var i
+  for(i=0; i<jobs.length; i++){
+    var j
+    for(j=0; j<jobs[i].children.length; j++){
+      if(jobs[i].children[j].classList.contains("activity")){
+        jobs[i].children[j].style.opacity = 1
+        break
+      }
+    }
+  }
+
+}
+
 function dropEffect(element, target){
 
   //You will have to create an element called prev position-
@@ -280,6 +295,8 @@ function dropEffect(element, target){
       element.ontouchstart = ""
       element.ontouchend = ""
       element.ontouchcancel = ""
+      element.style.opacity = 0.7
+      markFirsts()
     }
   }
   else {
@@ -335,7 +352,7 @@ function addJob(id,activities){
   var job = document.createElement("div")
   job.setAttribute("id","job"+String(id))
   job.setAttribute("style", "height: 70px;")
-
+  job.setAttribute("class", "jobb")
 
   var j
   for (j=0; j<activities.length; j++){
@@ -345,7 +362,7 @@ function addJob(id,activities){
     activity.setAttribute("onclick", "prepareDrag(event)")
     activity.setAttribute("ontouchstart", "prepareDrag(event)")
     activity.setAttribute("style", "box-sizing: border-box; width: "+String(activities[j][0]/maxTime*100)+"%; "+
-        "height: 100%; float:left; background: "+ job_colors[id]+"; border: solid; border-width: 7px .7vw; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
+        "height: 100%; opacity:0.7; float:left; background: "+ job_colors[id]+"; border: solid; border-width: 7px .7vw; border-color: "+machine_colors[activities[j][1]]+" "+job_colors[id]+";")
     var original_position = document.createElement("div")
     var img = document.createElement("img")
     img.setAttribute("src",aliens[activities[j][1]])
@@ -363,7 +380,7 @@ function addJob(id,activities){
   small_space = document.createElement("div")
   small_space.setAttribute("style", "height: 10px")
   jobs.appendChild(small_space)
-
+  markFirsts()
 
 }
 
