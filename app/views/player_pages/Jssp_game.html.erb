@@ -380,7 +380,7 @@ function addJob(id,activities){
   small_space = document.createElement("div")
   small_space.setAttribute("style", "height: 10px")
   jobs.appendChild(small_space)
-  markFirsts()
+
 
 }
 
@@ -463,9 +463,8 @@ var slvr = new solver()
 var source = {machines: <%= @n_machines%>, machine_type: machine_type, activities: assignJobs(<%= @JSSA%>)}
 createMachines(<%= @n_machines%>)
 var saved_steps = <%=@steps%>
-console.log(saved_steps)
 program = new JSSProblem(idGame, source, slvr, saved_steps)
-
+markFirsts()
 function assignJobs(activities_info){
   // will add activities to its respective job in order
   // convert [#job, position, time_cost,id activity, machine_type] to

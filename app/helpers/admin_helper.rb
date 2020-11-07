@@ -4,11 +4,14 @@ module AdminHelper
   def prepareData
     #for each game that is not downloaded yet create a zip with that File
     #mark as saved each item saved
+    #GamesPlayed.where(finished: true, downloaded:[0,1]).find_in_batches(batch_size: 10)
     @steps = 0
     jssps = []
+    counter=0
     Zip::File.open("public/game_data.zip", Zip::File::CREATE){ |zip|
       GamesPlayed.where(finished: true, downloaded:[0,1]).each do |game|
         #get jssps that where used so we also send their information
+        counter+=1
         jssps.push(game.idJSSP)
         #will have each step with number_step, idActivity, number_machine, position
         file_text = ""
@@ -26,6 +29,9 @@ module AdminHelper
         zip.get_output_stream(name_file){|f| f.puts file_text}
         game.downloaded = 1
         game.save
+        if(counter>10)
+          break
+        end
       end
       jssps.each do |j|
         name_file = "JSSP_"+j.to_s+"_info.txt"
