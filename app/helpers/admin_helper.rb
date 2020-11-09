@@ -29,8 +29,7 @@ module AdminHelper
         zip.get_output_stream(name_file){|f| f.puts file_text}
         game.downloaded = 1
         game.save
-        if(counter>5)
-          break
+        
         end
       end
       jssps.each do |j,t|
@@ -80,7 +79,7 @@ module AdminHelper
     filename = "public/game_data.zip"
     file_content = open(filename).read
     encoded_content = [file_content].pack("m")   # base64
-    files = GamesPlayed.where(downloaded: 1).count.to_s
+    files = GamesPlayed.where(downloaded: [1,2]).count.to_s
     marker = "AUNIQUEMARKER"
 
     part1 = <<-END_OF_MESSAGE
