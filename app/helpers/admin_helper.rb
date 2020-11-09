@@ -29,8 +29,7 @@ module AdminHelper
         zip.get_output_stream(name_file){|f| f.puts file_text}
         game.downloaded = 1
         game.save
-        
-        end
+       
       end
       jssps.each do |j,t|
         name_file = "JSSP_"+j.to_s+"_info.txt"
