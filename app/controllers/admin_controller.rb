@@ -12,6 +12,7 @@ class AdminController < ApplicationController
   def jssp_info
   end
 
+
   def makeData
     @rows = 0
     Step
@@ -197,6 +198,10 @@ class AdminController < ApplicationController
 
     render json: {message: @message, num: @num}
 
+  end
+
+  def raw_data
+    
   end
 
 end

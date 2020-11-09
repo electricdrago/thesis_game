@@ -6,13 +6,13 @@ module AdminHelper
     #mark as saved each item saved
     #GamesPlayed.where(finished: true, downloaded:[0,1]).find_in_batches(batch_size: 10)
     @steps = 0
-    jssps = []
+    jssps = {}
     counter=0
     Zip::File.open("public/game_data.zip", Zip::File::CREATE){ |zip|
       GamesPlayed.where(finished: true, downloaded:[0,1]).each do |game|
         #get jssps that where used so we also send their information
         counter+=1
-        jssps.push(game.idJSSP)
+        jssps[game.idJSSP] = 0
         #will have each step with number_step, idActivity, number_machine, position
         file_text = ""
         #name of file will have JSSP id, user id, points game id
@@ -29,11 +29,11 @@ module AdminHelper
         zip.get_output_stream(name_file){|f| f.puts file_text}
         game.downloaded = 1
         game.save
-        if(counter>10)
+        if(counter>5)
           break
         end
       end
-      jssps.each do |j|
+      jssps.each do |j,t|
         name_file = "JSSP_"+j.to_s+"_info.txt"
         file_text = ""
         activities = JsspActivity.where(idJSSP: j)

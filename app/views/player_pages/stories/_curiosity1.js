@@ -1,6 +1,7 @@
 var story = {
   //order, dialog, character, side
-  "dialogs": [[1, "Couldn't we make things better by changing some of our traditions?, wouldn't it be more effective if we just do the working parts?", "nicubunu_Game_baddie_Devil.png", "left"],
+  "dialogs": [[0, "hey kiddo, what are you thinking?", "nicubunu_Game_baddie_Basic_guy.png", "right"],
+  [1, "Glad you ask, just couldn't we make things better by changing some of our traditions?, wouldn't it be more effective if we just do the working parts?", "nicubunu_Game_baddie_Devil.png", "left"],
   [0, "hmm, yes we could, you are right,some things might be more effective, boring though but effective", "nicubunu_Game_baddie_Basic_guy.png", "right"],
   [1, "We could easily just stop doing those parts, at the end it just takes effective time from the wokers, and changing that won't affect you", "nicubunu_Game_baddie_Devil.png", "left"],
   [0, "I guess not, but workers have the right to feel free and enjoy their work", "nicubunu_Game_baddie_Basic_guy.png", "right"],

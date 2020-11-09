@@ -33,5 +33,6 @@ Rails.application.routes.draw do
   get 'delete_all' => "admin#deleteAll"
   get 'full_pack' => "admin#fullPack"
   get 'data' => "admin#data"
+  get 'rawdata' => "admin#raw_data"
 
 end

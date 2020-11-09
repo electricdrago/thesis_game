@@ -1,0 +1,39 @@
+<%jssps= {}
+GamesPlayed.where(finished: true, downloaded:[0,1,2]).each do |game|
+  #get jssps that where used so we also send their information
+
+  jssps[game.idJSSP] = 0
+  #will have each step with number_step, idActivity, number_machine, position
+  file_text = ""
+  #name of file will have JSSP id, user id, points game id
+  if !game.end_points
+    game.end_points=0
+  end
+  name_file = game.idJSSP.to_s+"_"+game.idUser.to_s+"_"+game.id.to_s+"_"+(game.end_points*100).floor.to_s+"_"+game.created_at.to_s+"_"+game.updated_at.to_s+".csv"
+  steps = Step.where(idGame: game.id).order(:number_step)
+  steps.each do |j|
+    file_text += j.number_step.to_s + ", " + j.idActivity.to_s + ", " + j.number_machine.to_s + ", " +  j.position.to_s+", "+j.created_at.to_s
+    file_text += "<br>"
+
+  end%>
+  <%=raw name_file%>
+  <br>
+  <%=raw file_text%>
+  <br>
+<%
+end
+jssps.each do |j, t|
+  name_file = "JSSP_"+j.to_s+"_info.txt"
+  file_text = ""
+  activities = JsspActivity.where(idJSSP: j)
+  activities.each do |i|
+    file_text+= i.id.to_s+", "+i.number_job.to_s+", "+i.order.to_s+", "+i.time_cost.to_s+", "+i.machine_type.to_s
+    file_text += "<br>"
+  end%>
+    <%=raw name_file%>
+    <br>
+    <%=raw file_text%>
+    <br>
+<%
+end
+%>
