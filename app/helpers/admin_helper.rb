@@ -19,7 +19,7 @@ module AdminHelper
         if !game.end_points
           game.end_points=0
         end
-        name_file = game.idJSSP.to_s+"_"+game.idUser.to_s+"_"+game.id.to_s+"_"+(game.end_points*100).floor.to_s+"_"+game.created_at.to_s+"_"+game.updated_at.to_s+".csv"
+        name_file = game.idJSSP.to_s+"_"+game.idUser.to_s+"_"+game.id.to_s+"_"+(game.end_points*100).floor.to_s+".csv"
         steps = Step.where(idGame: game.id).order(:number_step)
         steps.each do |j|
           file_text += j.number_step.to_s + ", " + j.idActivity.to_s + ", " + j.number_machine.to_s + ", " +  j.position.to_s+", "+j.created_at.to_s
