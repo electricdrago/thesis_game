@@ -24,6 +24,12 @@ button {
   z-index:3;
 
 }
+.bb {
+  height: 10vmin;
+  width: 12vmin;
+  font-size: 5vmin;
+  background-color: Blue;
+}
 .title {
     margin-top: 2%;
     margin-bottom: 3%;
@@ -61,7 +67,7 @@ button {
 <b><p class="title" style="padding-left:3%">Mutation Center</p></b>
 <p id="extraPoints" class="points"><%=@extra_points.floor%> points <br> Price: 10p</p>
 <%characters = [["nicubunu_Game_baddie_Warrior.png", "nicubunu_Game_baddie_Ninja.png", "nicubunu_Game_baddie_Camouflage.png"],
-["nicubunu_Game_baddie_Squared.png", "nicubunu_Game_baddie_.png", "nicubunu_Game_baddie_.png"],
+["nicubunu_Game_baddie_Squared.png", "nicubunu_Game_baddie_Girl.png", "nicubunu_Game_baddie_Borg.png"],
 ["nicubunu_Game_baddie_Devil.png", "nicubunu_Game_baddie_Billy.png", "nicubunu_Game_baddie_Stripey.png"],
 ["nicubunu_Game_baddie_Sunglasser.png", "nicubunu_Game_baddie_Princess.png", "nicubunu_Game_baddie_Dandy.png"],
 ["nicubunu_Game_baddie_Candy.png", "nicubunu_Game_baddie_Bricky.png", "nicubunu_Game_baddie_Geek.png"]
@@ -93,7 +99,7 @@ for i in @items%>
   <br>
 <% z+=1%>
 <%end%>
-<button type="button" onclick="buy()" style="position: fixed; bottom: 10%;right:5%; font-size:3vmin">Finish</button>
+<button type="button" class= "bb" onclick="buy()" style="position: fixed; bottom: 10%;right:5%; font-size:3vmin">Finish</button>
 
 <script>
 var skills = <%=raw @items.to_json%>

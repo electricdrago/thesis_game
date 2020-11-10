@@ -10,7 +10,7 @@ var story = {
   [5, "Wow, I'm getting so exited with this idea, lets start now!", "nicubunu_Game_baddie_Basic_guy.png", "right"]
 ],
   //background, frame, tutorial? (small frame)
-  "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+  "scenes": [["background_dist.jpeg", 0, false]],
   //strength, intelligence, curiosity, organization, construction
   "levels": [0,0,60,0,0]
 }

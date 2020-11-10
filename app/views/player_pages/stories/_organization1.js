@@ -9,7 +9,7 @@ var story = {
   [0, "That sounds cool, I'll take it", "nicubunu_Game_baddie_Sunglasser.png", "right"],
   [1, "Great! now we have someone that can organize others", "nicubunu_Game_baddie_Basic_guy.png", "left"]],
   //background, frame, tutorial? (small frame)
-  "scenes": [["background_.jpg", 0, false]],
+  "scenes": [["background_land.jpg", 0, false]],
   //strength, intelligence, curiosity, organization, construction
   "levels": [200,0,0,0,0]
 }

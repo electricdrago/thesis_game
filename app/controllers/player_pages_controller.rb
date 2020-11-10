@@ -59,7 +59,7 @@ class PlayerPagesController < ApplicationController
 
       if points>=0.85
         n = 10
-        points += (10*points/130).to_i+15
+        points += (10*current_user.points/130).to_i+15
         current_user.points+=points
       end
 
@@ -158,10 +158,10 @@ class PlayerPagesController < ApplicationController
     #Mark story as read when starting game
 
     story_map=[[0,0,0,0,0, "intro.js"], [30,0,0,0,0,"strength1.js"], [60,0,0,0,0,"strength2.js"], [90,0,0,0,0,"strength3.js"],
-    [0,30,0,0,0,"intelligence1.js"], [200,60,0,0,0,"intelligence2.js"], [200,90,0,0,0,"intelligence3.js"],
+    [0,30,0,0,0,"intelligence1.js"], [0,60,0,0,0,"intelligence2.js"], [0,90,0,0,0,"intelligence3.js"],
     [0,0,30,0,0,"curiosity1.js"], [0,0,60,0,0,"curiosity2.js"], [0,0,90,0,0,"curiosity3.js"],
     [0,0,0,30,0,"organization1.js"],[0,0,0,60,0,"organization2.js"],[0,0,0,90,0,"organization3.js"],
-    [0,0,0,0,30,"construcction1.js"], [0,0,0,60,0,"construcction2.js"], [0,0,0,0,90,"construcction3.js"]]
+    [0,0,0,0,30,"construcction1.js"], [0,0,0,0,60,"construcction2.js"], [0,0,0,0,90,"construcction3.js"]]
     l = story_map.length
     if !current_user.stories
       current_user.stories = "0"

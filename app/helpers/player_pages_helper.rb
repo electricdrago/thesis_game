@@ -93,7 +93,7 @@ module PlayerPagesHelper
     basic = ["nicubunu_Game_baddie_Basic_guy.png", "nicubunu_Game_baddie_Basic_guy2.png", "nicubunu_Game_baddie_Basic_guy3.png", "nicubunu_Game_baddie_Basic_guy4.png", "nicubunu_Game_baddie_Basic_guy5.png", "nicubunu_Game_baddie_Basic_guy6.png"]
     strength = ["nicubunu_Game_baddie_Warrior.png", "nicubunu_Game_baddie_Ninja.png", "nicubunu_Game_baddie_Camouflage.png"]
     curiosity = ["nicubunu_Game_baddie_Devil.png", "nicubunu_Game_baddie_Billy.png", "nicubunu_Game_baddie_Stripey.png"]
-    intelligence = ["nicubunu_Game_baddie_Squared.png", "nicubunu_Game_baddie_.png", "nicubunu_Game_baddie_.png"]
+    intelligence = ["nicubunu_Game_baddie_Squared.png", "nicubunu_Game_baddie_Girl.png", "nicubunu_Game_baddie_Borg.png"]
     organization = ["nicubunu_Game_baddie_Sunglasser.png", "nicubunu_Game_baddie_Princess.png", "nicubunu_Game_baddie_Dandy.png"]
     construction = ["nicubunu_Game_baddie_Candy.png", "nicubunu_Game_baddie_Bricky.png", "nicubunu_Game_baddie_Geek.png"]
     final_chars = []

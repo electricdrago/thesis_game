@@ -9,7 +9,7 @@ var story = {
   [6, "Those days are over!,.. well actually not yet, as it does take time to make these buildings", "nicubunu_Game_baddie_Geek.png", "left"],
   [7, "Well what are we waiting for, lets start now!", "nicubunu_Game_baddie_Basic_guy.png", "right"],],
   //background, frame, tutorial? (small frame)
-  "scenes": [["background_lab.jpg", 0, false], ["background_tutorial_begin.png", 0, false]],
+  "scenes": [["background_castle.jpg", 0, false]],
   //strength, intelligence, curiosity, organization, construction
   "levels": [200,0,0,0,0]
 }

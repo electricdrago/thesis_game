@@ -1,7 +1,8 @@
 var story = {
   //order, dialog, character, side
   "dialogs": [[1, "Some of our new children have been complaining after living a few days", "nicubunu_Game_baddie_Basic_guy.png", "right"],
-  [0, "I DON'T WANT TO SLEEP ON TREES ANYMORE!!!, I WANT SOMETHING TO COVER US FROM ALL SIDES WHILE WE SLEEP, I DON'T WANT TO SLEEP WITH MOSQUITOES, OR WITH RAIN", "nicubunu_Game_baddie_Candy.png", "left"],
+  [0, "I DON'T WANT TO SLEEP ON TREES ANYMORE!!!, I WANT SOMETHING TO COVER US FROM ALL SIDES WHILE WE SLEEP", "nicubunu_Game_baddie_Candy.png", "left"],
+  [4, "I DON'T WANT TO SLEEP WITH MOSQUITOES, OR WITH RAIN", "nicubunu_Game_baddie_Candy.png", "left"],
   [1, "Wow, calm, do you have any solutions?", "nicubunu_Game_baddie_Basic_guy.png", "right"],
   [2, "As a matter of fact I do, behold the Triangle that Ends Nomads Fears or TENF for short", "nicubunu_Game_baddie_Candy.png", "left"],
   [3, "Interesting", "nicubunu_Game_baddie_Basic_guy.png", "right"],

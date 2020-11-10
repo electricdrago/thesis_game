@@ -7,7 +7,7 @@ var story = {
   [1, "Then it is just about translating it, just a little math and ingenuity", "nicubunu_Game_baddie_Girl.png", "left"],
   [0, "Ahamm.. just..", "nicubunu_Game_baddie_Basic_guy.png", "right"]],
   //background, frame, tutorial? (small frame)
-  "scenes": [["background_.jpg", 0, false]],
+  "scenes": [["background_waves.jpg", 0, false]],
   //strength, intelligence, curiosity, organization, construction
   "levels": [200,0,0,0,0]
 }
