@@ -19,7 +19,7 @@ module AdminHelper
         if !game.end_points
           game.end_points=0
         end
-        name_file = game.idJSSP.to_s+"_"+game.idUser.to_s+"_"+game.id.to_s+"_"+(game.end_points*100).floor.to_s+"_"+game.created_at.to_s+"_"+game.updated_at.to_s+".csv"
+        name_file = game.idJSSP.to_s+"_"+game.idUser.to_s+"_"+game.id.to_s+"_"+(game.end_points*100).floor.to_s+".csv"
         steps = Step.where(idGame: game.id).order(:number_step)
         steps.each do |j|
           file_text += j.number_step.to_s + ", " + j.idActivity.to_s + ", " + j.number_machine.to_s + ", " +  j.position.to_s+", "+j.created_at.to_s
@@ -29,9 +29,7 @@ module AdminHelper
         zip.get_output_stream(name_file){|f| f.puts file_text}
         game.downloaded = 1
         game.save
-        if(counter>5)
-          break
-        end
+       
       end
       jssps.each do |j,t|
         name_file = "JSSP_"+j.to_s+"_info.txt"
@@ -80,7 +78,7 @@ module AdminHelper
     filename = "public/game_data.zip"
     file_content = open(filename).read
     encoded_content = [file_content].pack("m")   # base64
-    files = GamesPlayed.where(downloaded: 1).count.to_s
+    files = GamesPlayed.where(downloaded: [1,2]).count.to_s
     marker = "AUNIQUEMARKER"
 
     part1 = <<-END_OF_MESSAGE
