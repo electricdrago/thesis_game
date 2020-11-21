@@ -18,7 +18,7 @@ module PlayerPagesHelper
     if points < 140
       #p "level2"
       jssp = Jssp.find_by(level: 1, number: current_user.last_beginner+1)
-      current_user.last_beginner+=(current_user.id%5)
+      current_user.last_beginner+=(current_user.id%5)+1
       if !jssp
         current_user.last_beginner=0
         jssp = Jssp.find_by(level: 1, number: 0)
